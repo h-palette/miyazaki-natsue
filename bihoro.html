@@ -44,13 +44,13 @@
     .fi-d4 { transition-delay: .52s; }
 
     /* ── ナビ ── */
-    nav {
+    #nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
       padding: 22px 24px;
       transition: background .5s, backdrop-filter .5s, box-shadow .5s;
     }
-    nav.scrolled {
+    #nav.scrolled {
       background: rgba(250,247,242,.96);
       backdrop-filter: blur(10px);
       box-shadow: 0 1px 0 rgba(212,197,169,.35);
@@ -425,7 +425,7 @@
 
     /* ── デスクトップ対応 ── */
     @media(min-width: 768px) {
-      nav { padding: 26px 52px; }
+      #nav { padding: 26px 52px; }
       .hero-body { padding: 0 52px 88px; }
       .inner { padding: 0 52px; }
       .section { padding: 120px 0; }
