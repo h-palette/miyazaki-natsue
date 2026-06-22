@@ -359,66 +359,8 @@
     </div>
     <div class="rule fi fi-d1"></div>
 
-    <!-- 2026年 -->
-    <div class="tl-group" data-year="2026">
-      <div class="tl-year-row fi">
-        <span class="tl-year-num">2026</span>
-        <span class="tl-year-suffix">YEAR</span>
-        <span class="tl-year-line"></span>
-      </div>
-      <div class="report-item fi" data-category="教育・子ども">
-        <span class="report-badge badge-edu">教育・子ども</span>
-        <h3 class="report-title">美幌高校をまちづくりの軸に据える、根拠と提案</h3>
-        <p class="report-text">「美幌高校はまちづくりの軸である」――この命題を、数字と学術的根拠で示し、行政の縦割りを超えた横断的な推進体制の構築を求めました。</p>
-      </div>
-    </div>
-
-    <!-- 2024年 -->
-    <div class="tl-group" data-year="2024">
-      <div class="tl-year-row fi">
-        <span class="tl-year-num">2024</span>
-        <span class="tl-year-suffix">YEAR</span>
-        <span class="tl-year-line"></span>
-      </div>
-      <div class="report-item fi" data-category="教育・子ども">
-        <span class="report-badge badge-edu">教育・子ども</span>
-        <h3 class="report-title">フリースクール支援の実現</h3>
-        <p class="report-text">学校に行けない子どもたちの居場所と学びを守るための支援が動き始めました。</p>
-      </div>
-      <div class="report-item fi fi-d1" data-category="食・農業">
-        <span class="report-badge badge-food">食・農業</span>
-        <h3 class="report-title">地元野菜の学校給食への導入推進</h3>
-        <p class="report-text">美幌で育った野菜が、子どもたちの給食に並ぶ機会を増やす取り組みを続けています。</p>
-      </div>
-      <div class="report-item fi fi-d2" data-category="働き方">
-        <span class="report-badge badge-work">働き方</span>
-        <h3 class="report-title">議会オンライン参加の推進</h3>
-        <p class="report-text">子育て中・通院中でも議会に参加できる環境整備を提案。</p>
-      </div>
-    </div>
-
-    <!-- 2023年 -->
-    <div class="tl-group" data-year="2023">
-      <div class="tl-year-row fi">
-        <span class="tl-year-num">2023</span>
-        <span class="tl-year-suffix">YEAR</span>
-        <span class="tl-year-line"></span>
-      </div>
-      <div class="report-item fi" data-category="自然・環境">
-        <span class="report-badge badge-nature">自然・環境</span>
-        <h3 class="report-title">美幌の自然環境保全についての一般質問</h3>
-        <p class="report-text">美幌の豊かな自然を次世代に残すための施策を議会で提案。</p>
-      </div>
-      <div class="report-item fi fi-d1" data-category="女性・若者">
-        <span class="report-badge badge-women">女性・若者</span>
-        <h3 class="report-title">女性が働きやすい環境整備についての提言</h3>
-        <p class="report-text">ライフステージに合わせて働ける環境づくりを訴えました。</p>
-      </div>
-      <div class="report-item fi fi-d2" data-category="その他">
-        <span class="report-badge badge-other">その他</span>
-        <h3 class="report-title">厚沢部町への視察レポート</h3>
-        <p class="report-text">先進的な取り組みを行う厚沢部町を視察し、美幌への応用を検討。</p>
-      </div>
+    <div id="timelineContainer">
+      <p class="hint" id="loadingMsg" style="text-align:center; color: var(--text-light);">読み込み中...</p>
     </div>
 
     <p class="body-text fi" id="emptyMsg" style="display:none; text-align:center; color: var(--text-light); margin-top: 32px;">
@@ -475,6 +417,7 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
+  window.observeFadeIn = (el) => io.observe(el);
 
   // フィルターバーの横スクロール端フェード
   const filterWrap = document.getElementById('filterWrap');
@@ -487,33 +430,105 @@
   filterBar.addEventListener('scroll', updateFilterFade, { passive: true });
   window.addEventListener('resize', updateFilterFade);
   updateFilterFade();
+</script>
 
-  // カテゴリフィルター
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const reportItems = document.querySelectorAll('.report-item');
-  const tlGroups = document.querySelectorAll('.tl-group');
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    projectId: "miyazaki-natsue",
+    appId: "1:824408115855:web:3532e8f52e348f1bd83efa",
+    apiKey: "AIzaSyBTV1nh4-xK2TE73SIOb4IeUtIp2U8dhY8",
+    authDomain: "miyazaki-natsue.firebaseapp.com",
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const BADGE_CLASS = {
+    '教育・子ども': 'badge-edu',
+    '働き方': 'badge-work',
+    '食・農業': 'badge-food',
+    '自然・環境': 'badge-nature',
+    '女性・若者': 'badge-women',
+    'その他': 'badge-other',
+  };
+
+  const container = document.getElementById('timelineContainer');
   const emptyMsg = document.getElementById('emptyMsg');
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.dataset.filter;
+  function renderTimeline(reports) {
+    container.innerHTML = '';
+    if (reports.length === 0) {
+      container.innerHTML = '<p class="hint" style="text-align:center;">まだレポートがありません。</p>';
+      return;
+    }
+    const years = [...new Set(reports.map(r => r.year))].sort((a, b) => b - a);
+    years.forEach(year => {
+      const group = document.createElement('div');
+      group.className = 'tl-group';
+      group.dataset.year = year;
 
-      reportItems.forEach(item => {
-        const show = cat === 'すべて' || item.dataset.category === cat;
-        item.classList.toggle('hidden', !show);
+      const yearRow = document.createElement('div');
+      yearRow.className = 'tl-year-row fi';
+      yearRow.innerHTML = `<span class="tl-year-num">${year}</span><span class="tl-year-suffix">YEAR</span><span class="tl-year-line"></span>`;
+      group.appendChild(yearRow);
+      window.observeFadeIn(yearRow);
+
+      reports.filter(r => r.year === year).forEach((r, i) => {
+        const item = document.createElement('div');
+        item.className = 'report-item fi' + (i > 0 ? ` fi-d${Math.min(i, 4)}` : '');
+        item.dataset.category = r.category;
+        const badgeClass = BADGE_CLASS[r.category] || 'badge-other';
+        item.innerHTML = `
+          <span class="report-badge ${badgeClass}">${r.category}</span>
+          <h3 class="report-title">${r.title}</h3>
+          <p class="report-text">${r.text}</p>
+        `;
+        group.appendChild(item);
+        window.observeFadeIn(item);
       });
 
-      let anyVisible = false;
-      tlGroups.forEach(group => {
-        const visibleInGroup = [...group.querySelectorAll('.report-item')].some(item => !item.classList.contains('hidden'));
-        group.style.display = visibleInGroup ? '' : 'none';
-        if (visibleInGroup) anyVisible = true;
-      });
-      emptyMsg.style.display = anyVisible ? 'none' : 'block';
+      container.appendChild(group);
     });
-  });
+
+    wireFilter();
+  }
+
+  function wireFilter() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const reportItems = document.querySelectorAll('.report-item');
+    const tlGroups = document.querySelectorAll('.tl-group');
+
+    filterBtns.forEach(btn => {
+      btn.onclick = () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.filter;
+
+        reportItems.forEach(item => {
+          const show = cat === 'すべて' || item.dataset.category === cat;
+          item.classList.toggle('hidden', !show);
+        });
+
+        let anyVisible = false;
+        tlGroups.forEach(group => {
+          const visibleInGroup = [...group.querySelectorAll('.report-item')].some(item => !item.classList.contains('hidden'));
+          group.style.display = visibleInGroup ? '' : 'none';
+          if (visibleInGroup) anyVisible = true;
+        });
+        emptyMsg.style.display = anyVisible ? 'none' : 'block';
+      };
+    });
+  }
+
+  try {
+    const snap = await getDocs(query(collection(db, 'reports'), orderBy('year', 'desc'), orderBy('createdAt', 'desc')));
+    const reports = snap.docs.map(d => d.data());
+    renderTimeline(reports);
+  } catch (e) {
+    container.innerHTML = '<p class="hint" style="text-align:center;">読み込みに失敗しました。時間をおいて再読み込みしてください。</p>';
+  }
 </script>
 </body>
 </html>

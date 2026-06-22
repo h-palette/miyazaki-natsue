@@ -465,7 +465,7 @@
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg" data-photo-slot="hero"></div>
   <div class="hero-grad"></div>
   <div class="hero-body">
     <p class="hero-eyebrow">BIHORO · HOKKAIDO · 美幌町議会議員</p>
@@ -500,7 +500,7 @@
 
 <!-- 全幅写真 峠 -->
 <div class="fullphoto fi">
-  <img src="photo-pass.jpg" alt="美幌峠の景色" loading="lazy">
+  <img src="photo-pass.jpg" alt="美幌峠の景色" loading="lazy" data-photo-slot="pass">
   <span class="fullphoto-cap">美幌峠 / Bihoro Pass</span>
 </div>
 
@@ -515,19 +515,19 @@
   </div>
   <div class="life-grid fi fi-d1">
     <div class="lg-item lg-wide">
-      <img src="photo-landscape.jpg" alt="北海道の広大な風景" loading="lazy">
+      <img src="photo-landscape.jpg" alt="北海道の広大な風景" loading="lazy" data-photo-slot="landscape">
       <div class="lg-cap">広大な景色が、日常にある</div>
     </div>
     <div class="lg-item">
-      <img src="photo-garden.jpg" alt="家庭菜園" loading="lazy">
+      <img src="photo-garden.jpg" alt="家庭菜園" loading="lazy" data-photo-slot="garden">
       <div class="lg-cap">家庭菜園</div>
     </div>
     <div class="lg-item">
-      <img src="photo-animals.jpg" alt="身近な動物" loading="lazy">
+      <img src="photo-animals.jpg" alt="身近な動物" loading="lazy" data-photo-slot="animals">
       <div class="lg-cap">身近な生き物たち</div>
     </div>
     <div class="lg-item">
-      <img src="photo-kids.jpg" alt="子どもの外遊び" loading="lazy">
+      <img src="photo-kids.jpg" alt="子どもの外遊び" loading="lazy" data-photo-slot="kids">
       <div class="lg-cap">子どもの遊び場</div>
     </div>
   </div>
@@ -544,7 +544,7 @@
     <span class="eyebrow fi">PROFILE</span>
     <div class="about-photo-wrap fi fi-d1">
       <div class="about-photo">
-        <img src="photo-portrait.jpg" alt="宮崎奈津江" loading="lazy">
+        <img src="photo-portrait.jpg" alt="宮崎奈津江" loading="lazy" data-photo-slot="portrait">
       </div>
       <div class="about-deco"></div>
     </div>
@@ -619,7 +619,7 @@
 
 <!-- 星空帯 -->
 <div class="star-belt fi">
-  <div class="star-belt-bg"></div>
+  <div class="star-belt-bg" data-photo-slot="stars"></div>
   <div class="star-belt-ov"></div>
   <div class="star-belt-txt">
     <p>満点の星空が、見える。<br>天の川が、見える。<br>それが、ここ美幌の日常です。</p>
@@ -706,6 +706,37 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    projectId: "miyazaki-natsue",
+    appId: "1:824408115855:web:3532e8f52e348f1bd83efa",
+    apiKey: "AIzaSyBTV1nh4-xK2TE73SIOb4IeUtIp2U8dhY8",
+    authDomain: "miyazaki-natsue.firebaseapp.com",
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const slots = new Set();
+  document.querySelectorAll('[data-photo-slot]').forEach(el => slots.add(el.dataset.photoSlot));
+
+  slots.forEach(async (slot) => {
+    try {
+      const snap = await getDoc(doc(db, 'photos', slot));
+      if (!snap.exists() || !snap.data().dataUrl) return;
+      const url = snap.data().dataUrl;
+      document.querySelectorAll(`[data-photo-slot="${slot}"]`).forEach(el => {
+        if (el.tagName === 'IMG') el.src = url;
+        else el.style.backgroundImage = `url('${url}')`;
+      });
+    } catch (e) {
+      // 取得に失敗した場合は元の写真をそのまま表示
+    }
+  });
 </script>
 </body>
 </html>

@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null &&
+        request.auth.token.email in [
+          'tomomirie08270612@gmail.com',
+          'miyazaki.nanairo@gmail.com'
+        ];
+    }
+
+    match /reports/{reportId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /photos/{photoSlot} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.data.dataUrl is string
+        && request.resource.data.dataUrl.size() < 900000;
+    }
+  }
+}

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>管理画面 | 宮崎奈津江</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #7a9e7e;
+      --terracotta: #c17f4a;
+      --cream: #faf7f2;
+      --cream-dark: #f3ede3;
+      --beige: #d4c5a9;
+      --beige-light: #e8dfd0;
+      --dark-green: #4a7a5a;
+      --text: #3d5245;
+      --text-mid: #6a8872;
+      --text-light: #9ab4a0;
+      --danger: #b5564a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--cream); color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif; font-weight: 300; line-height: 1.8;
+    }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 32px 24px 80px; }
+    h1, h2 { font-family: 'Noto Serif JP', serif; font-weight: 500; color: var(--dark-green); }
+    h1 { font-size: 20px; margin: 0; }
+    h2 { font-size: 16px; margin: 0 0 18px; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 24px; border-bottom: 1px solid var(--beige-light);
+      background: #fff; position: sticky; top: 0; z-index: 10;
+    }
+    .who { font-size: 12px; color: var(--text-light); }
+    .btn {
+      font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 400;
+      padding: 9px 18px; border-radius: 4px; border: 1px solid var(--sage);
+      background: #fff; color: var(--dark-green); cursor: pointer;
+      transition: background .2s;
+    }
+    .btn:hover { background: var(--cream-dark); }
+    .btn-primary { background: var(--dark-green); color: #fff; border-color: var(--dark-green); }
+    .btn-primary:hover { background: #3c6048; }
+    .btn-danger { border-color: var(--danger); color: var(--danger); }
+    .btn-danger:hover { background: #fbecea; }
+    .btn-small { padding: 6px 12px; font-size: 12px; }
+    .card {
+      background: #fff; border: 1px solid var(--beige-light); border-radius: 6px;
+      padding: 22px; margin-bottom: 16px;
+    }
+    .field { margin-bottom: 14px; }
+    label { display: block; font-size: 12.5px; color: var(--text-mid); margin-bottom: 6px; }
+    input[type=text], input[type=email], input[type=password], input[type=number], select, textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--beige); border-radius: 4px;
+      font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: var(--text); background: #fff;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .login-box { max-width: 360px; margin: 100px auto; }
+    .msg { font-size: 13px; margin-top: 10px; }
+    .msg.error { color: var(--danger); }
+    .msg.ok { color: var(--dark-green); }
+    .photo-row {
+      display: flex; gap: 16px; align-items: center; padding: 14px 0;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+    .photo-row:last-child { border-bottom: none; }
+    .photo-thumb {
+      width: 84px; height: 64px; flex-shrink: 0; border-radius: 4px; overflow: hidden;
+      background: var(--cream-dark); display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: var(--text-light);
+    }
+    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-info { flex: 1; min-width: 0; }
+    .photo-label { font-size: 13.5px; color: var(--text); margin-bottom: 2px; }
+    .photo-meta { font-size: 11px; color: var(--text-light); }
+    .photo-actions { flex-shrink: 0; display: flex; gap: 8px; align-items: center; }
+    .badge {
+      display: inline-block; font-size: 10.5px; color: #fff; border-radius: 10px;
+      padding: 2px 10px; margin-right: 8px;
+    }
+    .report-item {
+      padding: 14px 0; border-bottom: 1px solid var(--cream-dark);
+      display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
+    }
+    .report-item:last-child { border-bottom: none; }
+    .report-item-title { font-size: 14px; color: var(--dark-green); margin: 4px 0; }
+    .report-item-text { font-size: 12.5px; color: var(--text-mid); }
+    .report-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .hint { font-size: 11.5px; color: var(--text-light); margin-top: 6px; }
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--dark-green); color: #fff; padding: 12px 24px; border-radius: 6px;
+      font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .3s;
+      z-index: 100;
+    }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- ログイン画面 -->
+<div id="loginView" class="login-box">
+  <h1 style="text-align:center; margin-bottom:24px;">管理画面ログイン</h1>
+  <div class="card">
+    <div class="field">
+      <label for="loginEmail">メールアドレス</label>
+      <input type="email" id="loginEmail" autocomplete="username">
+    </div>
+    <div class="field">
+      <label for="loginPassword">パスワード</label>
+      <input type="password" id="loginPassword" autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary" id="loginBtn" style="width:100%;">ログイン</button>
+    <p id="loginMsg" class="msg error"></p>
+    <p class="hint" style="text-align:center; margin-top:16px;">
+      <a href="#" id="resetLink" style="color:var(--text-mid);">パスワードを忘れた場合</a>
+    </p>
+  </div>
+</div>
+
+<!-- 管理画面本体 -->
+<div id="adminView" style="display:none;">
+  <div class="topbar">
+    <h1>宮崎奈津江サイト 管理画面</h1>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <span class="who" id="whoAmI"></span>
+      <button class="btn btn-small" id="changePwBtn">パスワード変更</button>
+      <button class="btn btn-small" id="logoutBtn">ログアウト</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- 写真管理 -->
+    <section class="card">
+      <h2>写真の差し替え</h2>
+      <p class="hint" style="margin-bottom:14px;">差し替えたい写真の「ファイルを選択」から画像を選ぶと、自動的にサイト用に圧縮されて反映されます（反映まで数秒かかります）。</p>
+      <div id="photoList"></div>
+    </section>
+
+    <!-- 活動レポート管理 -->
+    <section class="card">
+      <h2>活動レポートの追加</h2>
+      <div class="field">
+        <label for="rCategory">カテゴリ</label>
+        <select id="rCategory">
+          <option value="教育・子ども">教育・子ども</option>
+          <option value="働き方">働き方</option>
+          <option value="食・農業">食・農業</option>
+          <option value="自然・環境">自然・環境</option>
+          <option value="女性・若者">女性・若者</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="rYear">年</label>
+        <input type="number" id="rYear" placeholder="例: 2026" min="2000" max="2100">
+      </div>
+      <div class="field">
+        <label for="rTitle">タイトル</label>
+        <input type="text" id="rTitle" placeholder="例: ○○についての一般質問">
+      </div>
+      <div class="field">
+        <label for="rText">説明文</label>
+        <textarea id="rText" placeholder="1〜2文程度の説明"></textarea>
+      </div>
+      <button class="btn btn-primary" id="rAddBtn">追加する</button>
+      <p id="reportMsg" class="msg ok"></p>
+    </section>
+
+    <section class="card">
+      <h2>活動レポート一覧</h2>
+      <div id="reportList"><p class="hint">読み込み中...</p></div>
+    </section>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import {
+    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+  import {
+    getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, deleteDoc, query, orderBy
+  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    projectId: "miyazaki-natsue",
+    appId: "1:824408115855:web:3532e8f52e348f1bd83efa",
+    storageBucket: "miyazaki-natsue.firebasestorage.app",
+    apiKey: "AIzaSyBTV1nh4-xK2TE73SIOb4IeUtIp2U8dhY8",
+    authDomain: "miyazaki-natsue.firebaseapp.com",
+    messagingSenderId: "824408115855"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const PHOTO_SLOTS = [
+    { id: 'hero',      label: 'ヒーロー写真（トップページ背景）' },
+    { id: 'portrait',  label: '人物写真' },
+    { id: 'pass',      label: '美幌峠' },
+    { id: 'stars',     label: '星空' },
+    { id: 'garden',    label: '家庭菜園' },
+    { id: 'animals',   label: '身近な動物' },
+    { id: 'forest',    label: '森と道（美幌への想いページ）' },
+    { id: 'kids',      label: '子どもの遊び場' },
+    { id: 'landscape', label: '広大な風景' },
+  ];
+
+  const BADGE_COLOR = {
+    '教育・子ども': '#7a9e7e',
+    '働き方': '#c17f4a',
+    '食・農業': '#8b6f47',
+    '自然・環境': '#2e4a38',
+    '女性・若者': '#c17f7f',
+    'その他': '#d4c5a9',
+  };
+
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  // ── ログイン ──
+  const loginView = document.getElementById('loginView');
+  const adminView = document.getElementById('adminView');
+  const loginMsg = document.getElementById('loginMsg');
+
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    loginMsg.textContent = '';
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (e) {
+      loginMsg.textContent = 'ログインに失敗しました。メールアドレスとパスワードを確認してください。';
+    }
+  });
+
+  document.getElementById('resetLink').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    if (!email) { loginMsg.textContent = 'メールアドレスを入力してから押してください。'; return; }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      loginMsg.classList.remove('error'); loginMsg.classList.add('ok');
+      loginMsg.textContent = 'パスワード再設定メールを送りました。メールをご確認ください。';
+    } catch (e) {
+      loginMsg.classList.remove('ok'); loginMsg.classList.add('error');
+      loginMsg.textContent = '送信に失敗しました。';
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+  document.getElementById('changePwBtn').addEventListener('click', async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    try {
+      await sendPasswordResetEmail(auth, user.email);
+      toast('パスワード再設定メールを送りました');
+    } catch (e) {
+      toast('送信に失敗しました');
+    }
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginView.style.display = 'none';
+      adminView.style.display = 'block';
+      document.getElementById('whoAmI').textContent = user.email;
+      renderPhotoList();
+      renderReportList();
+    } else {
+      loginView.style.display = 'block';
+      adminView.style.display = 'none';
+    }
+  });
+
+  // ── 写真管理 ──
+  function loadImageFile(file) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  async function resizeAndCompress(file, maxDim = 1600) {
+    const img = await loadImageFile(file);
+    let { width, height } = img;
+    if (width > maxDim || height > maxDim) {
+      if (width > height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+      else { width = Math.round(width * (maxDim / height)); height = maxDim; }
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = width; canvas.height = height;
+    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+    let quality = 0.82;
+    let dataUrl = canvas.toDataURL('image/jpeg', quality);
+    while (dataUrl.length > 850000 && quality > 0.3) {
+      quality -= 0.1;
+      dataUrl = canvas.toDataURL('image/jpeg', quality);
+    }
+    return dataUrl;
+  }
+
+  async function renderPhotoList() {
+    const listEl = document.getElementById('photoList');
+    listEl.innerHTML = '';
+    for (const slot of PHOTO_SLOTS) {
+      const row = document.createElement('div');
+      row.className = 'photo-row';
+
+      const thumb = document.createElement('div');
+      thumb.className = 'photo-thumb';
+      thumb.textContent = '読込中';
+      row.appendChild(thumb);
+
+      const info = document.createElement('div');
+      info.className = 'photo-info';
+      info.innerHTML = `<div class="photo-label">${slot.label}</div><div class="photo-meta" id="meta-${slot.id}">確認中...</div>`;
+      row.appendChild(info);
+
+      const actions = document.createElement('div');
+      actions.className = 'photo-actions';
+      const input = document.createElement('input');
+      input.type = 'file'; input.accept = 'image/*'; input.id = `file-${slot.id}`;
+      input.style.fontSize = '11px'; input.style.maxWidth = '150px';
+      actions.appendChild(input);
+      row.appendChild(actions);
+
+      listEl.appendChild(row);
+
+      getDoc(doc(db, 'photos', slot.id)).then((snap) => {
+        if (snap.exists() && snap.data().dataUrl) {
+          thumb.innerHTML = `<img src="${snap.data().dataUrl}" alt="">`;
+          const d = snap.data().updatedAt ? new Date(snap.data().updatedAt) : null;
+          document.getElementById(`meta-${slot.id}`).textContent = d ? `更新: ${d.toLocaleString('ja-JP')}` : 'カスタム画像を使用中';
+        } else {
+          thumb.textContent = '元の写真';
+          document.getElementById(`meta-${slot.id}`).textContent = '未差し替え（サイト初期写真を表示中）';
+        }
+      });
+
+      input.addEventListener('change', async () => {
+        const file = input.files[0];
+        if (!file) return;
+        document.getElementById(`meta-${slot.id}`).textContent = '圧縮・アップロード中...';
+        try {
+          const dataUrl = await resizeAndCompress(file);
+          await setDoc(doc(db, 'photos', slot.id), { dataUrl, updatedAt: Date.now() });
+          thumb.innerHTML = `<img src="${dataUrl}" alt="">`;
+          document.getElementById(`meta-${slot.id}`).textContent = `更新: ${new Date().toLocaleString('ja-JP')}`;
+          toast(`${slot.label} を差し替えました`);
+        } catch (e) {
+          document.getElementById(`meta-${slot.id}`).textContent = '失敗しました。もう一度お試しください。';
+        }
+        input.value = '';
+      });
+    }
+  }
+
+  // ── 活動レポート管理 ──
+  document.getElementById('rAddBtn').addEventListener('click', async () => {
+    const category = document.getElementById('rCategory').value;
+    const year = document.getElementById('rYear').value.trim();
+    const title = document.getElementById('rTitle').value.trim();
+    const text = document.getElementById('rText').value.trim();
+    const msg = document.getElementById('reportMsg');
+
+    if (!year || !title || !text) {
+      msg.classList.remove('ok'); msg.classList.add('error');
+      msg.textContent = '年・タイトル・説明文は必須です。';
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, 'reports'), {
+        category, year: Number(year), title, text, createdAt: Date.now()
+      });
+      msg.classList.remove('error'); msg.classList.add('ok');
+      msg.textContent = '追加しました。';
+      document.getElementById('rYear').value = '';
+      document.getElementById('rTitle').value = '';
+      document.getElementById('rText').value = '';
+      renderReportList();
+      toast('活動レポートを追加しました');
+    } catch (e) {
+      msg.classList.remove('ok'); msg.classList.add('error');
+      msg.textContent = '追加に失敗しました。';
+    }
+  });
+
+  async function renderReportList() {
+    const listEl = document.getElementById('reportList');
+    const snap = await getDocs(query(collection(db, 'reports'), orderBy('year', 'desc'), orderBy('createdAt', 'desc')));
+    if (snap.empty) {
+      listEl.innerHTML = '<p class="hint">まだレポートがありません。</p>';
+      return;
+    }
+    listEl.innerHTML = '';
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
+      const row = document.createElement('div');
+      row.className = 'report-item';
+      const color = BADGE_COLOR[d.category] || '#999';
+      row.innerHTML = `
+        <div>
+          <span class="badge" style="background:${color};">${d.category || ''}</span>
+          <span class="who">${d.year || ''}</span>
+          <div class="report-item-title">${d.title || ''}</div>
+          <div class="report-item-text">${d.text || ''}</div>
+        </div>
+        <div class="report-item-actions">
+          <button class="btn btn-small btn-danger" data-id="${docSnap.id}">削除</button>
+        </div>
+      `;
+      row.querySelector('button').addEventListener('click', async () => {
+        if (!confirm('このレポートを削除しますか？')) return;
+        await deleteDoc(doc(db, 'reports', docSnap.id));
+        toast('削除しました');
+        renderReportList();
+      });
+      listEl.appendChild(row);
+    });
+  }
+</script>
+</body>
+</html>

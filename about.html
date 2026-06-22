@@ -602,7 +602,7 @@
     <span class="eyebrow fi">PORTRAIT</span>
     <div class="about-photo-wrap fi fi-d1">
       <div class="about-photo">
-        <img src="photo-portrait.jpg" alt="宮崎奈津江" loading="lazy">
+        <img src="photo-portrait.jpg" alt="宮崎奈津江" loading="lazy" data-photo-slot="portrait">
       </div>
       <div class="about-deco"></div>
     </div>
@@ -695,6 +695,37 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    projectId: "miyazaki-natsue",
+    appId: "1:824408115855:web:3532e8f52e348f1bd83efa",
+    apiKey: "AIzaSyBTV1nh4-xK2TE73SIOb4IeUtIp2U8dhY8",
+    authDomain: "miyazaki-natsue.firebaseapp.com",
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const slots = new Set();
+  document.querySelectorAll('[data-photo-slot]').forEach(el => slots.add(el.dataset.photoSlot));
+
+  slots.forEach(async (slot) => {
+    try {
+      const snap = await getDoc(doc(db, 'photos', slot));
+      if (!snap.exists() || !snap.data().dataUrl) return;
+      const url = snap.data().dataUrl;
+      document.querySelectorAll(`[data-photo-slot="${slot}"]`).forEach(el => {
+        if (el.tagName === 'IMG') el.src = url;
+        else el.style.backgroundImage = `url('${url}')`;
+      });
+    } catch (e) {
+      // 取得に失敗した場合は元の写真をそのまま表示
+    }
+  });
 </script>
 </body>
 </html>

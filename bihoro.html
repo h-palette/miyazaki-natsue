@@ -464,7 +464,7 @@
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-bg" style="background-image: url('photo-pass.jpg');"></div>
+  <div class="hero-bg" style="background-image: url('photo-pass.jpg');" data-photo-slot="pass"></div>
   <div class="hero-grad"></div>
   <div class="hero-body">
     <p class="hero-eyebrow">BIHORO · HOKKAIDO · 美幌への想い</p>
@@ -499,7 +499,7 @@
 
 <!-- 全幅写真 -->
 <div class="fullphoto fi">
-  <img src="photo-forest.jpg" alt="美幌の自然と道" loading="lazy">
+  <img src="photo-forest.jpg" alt="美幌の自然と道" loading="lazy" data-photo-slot="forest">
   <span class="fullphoto-cap">美幌の森と道 / Forest road, Bihoro</span>
 </div>
 
@@ -514,27 +514,27 @@
   </div>
   <div class="life-grid fi fi-d1">
     <div class="lg-item">
-      <img src="photo-animals.jpg" alt="自然が日常" loading="lazy">
+      <img src="photo-animals.jpg" alt="自然が日常" loading="lazy" data-photo-slot="animals">
       <div class="lg-cap">自然が日常<br>鹿やキツネ、リスが、すぐそこに</div>
     </div>
     <div class="lg-item">
-      <img src="photo-stars.jpg" alt="星空と四季" loading="lazy">
+      <img src="photo-stars.jpg" alt="星空と四季" loading="lazy" data-photo-slot="stars">
       <div class="lg-cap">星空と四季<br>満点の星空と、移ろう季節</div>
     </div>
     <div class="lg-item">
-      <img src="photo-kids.jpg" alt="子どもの遊び" loading="lazy">
+      <img src="photo-kids.jpg" alt="子どもの遊び" loading="lazy" data-photo-slot="kids">
       <div class="lg-cap">子どもの遊び<br>外遊びが、暮らしの一部に</div>
     </div>
     <div class="lg-item">
-      <img src="photo-garden.jpg" alt="食の豊かさ" loading="lazy">
+      <img src="photo-garden.jpg" alt="食の豊かさ" loading="lazy" data-photo-slot="garden">
       <div class="lg-cap">食の豊かさ<br>新鮮な野菜が、食卓に並ぶ</div>
     </div>
     <div class="lg-item">
-      <img src="photo-landscape.jpg" alt="便利さ" loading="lazy">
+      <img src="photo-landscape.jpg" alt="便利さ" loading="lazy" data-photo-slot="landscape">
       <div class="lg-cap">便利さ<br>スーパーも空港も、15分圏内</div>
     </div>
     <div class="lg-item">
-      <img src="photo-pass.jpg" alt="暮らしのコスト" loading="lazy">
+      <img src="photo-pass.jpg" alt="暮らしのコスト" loading="lazy" data-photo-slot="pass">
       <div class="lg-cap">暮らしのコスト<br>庭付き一戸建てが、現実的な価格で</div>
     </div>
   </div>
@@ -639,6 +639,37 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    projectId: "miyazaki-natsue",
+    appId: "1:824408115855:web:3532e8f52e348f1bd83efa",
+    apiKey: "AIzaSyBTV1nh4-xK2TE73SIOb4IeUtIp2U8dhY8",
+    authDomain: "miyazaki-natsue.firebaseapp.com",
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const slots = new Set();
+  document.querySelectorAll('[data-photo-slot]').forEach(el => slots.add(el.dataset.photoSlot));
+
+  slots.forEach(async (slot) => {
+    try {
+      const snap = await getDoc(doc(db, 'photos', slot));
+      if (!snap.exists() || !snap.data().dataUrl) return;
+      const url = snap.data().dataUrl;
+      document.querySelectorAll(`[data-photo-slot="${slot}"]`).forEach(el => {
+        if (el.tagName === 'IMG') el.src = url;
+        else el.style.backgroundImage = `url('${url}')`;
+      });
+    } catch (e) {
+      // 取得に失敗した場合は元の写真をそのまま表示
+    }
+  });
 </script>
 </body>
 </html>
