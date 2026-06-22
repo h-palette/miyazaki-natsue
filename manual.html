@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>管理画面の使い方 | 宮崎奈津江</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #7a9e7e;
+      --terracotta: #c17f4a;
+      --cream: #faf7f2;
+      --cream-dark: #f3ede3;
+      --beige: #d4c5a9;
+      --beige-light: #e8dfd0;
+      --dark-green: #4a7a5a;
+      --text: #3d5245;
+      --text-mid: #6a8872;
+      --text-light: #9ab4a0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--cream); color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif; font-weight: 300; line-height: 1.9;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 100px; }
+    .top-title {
+      font-family: 'Noto Serif JP', serif; font-weight: 500;
+      font-size: 24px; color: var(--dark-green); margin-bottom: 6px;
+    }
+    .top-sub { font-size: 13px; color: var(--text-light); margin-bottom: 40px; }
+    .toc {
+      background: #fff; border: 1px solid var(--beige-light); border-radius: 6px;
+      padding: 20px 24px; margin-bottom: 40px;
+    }
+    .toc-title { font-size: 13px; color: var(--text-mid); margin-bottom: 10px; }
+    .toc a {
+      display: block; font-size: 14px; color: var(--dark-green);
+      text-decoration: none; padding: 5px 0;
+    }
+    .toc a:hover { text-decoration: underline; }
+    section { margin-bottom: 56px; }
+    h2 {
+      font-family: 'Noto Serif JP', serif; font-weight: 500; font-size: 19px;
+      color: var(--dark-green); border-bottom: 2px solid var(--sage);
+      padding-bottom: 10px; margin-bottom: 22px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--dark-green); color: #fff;
+      font-family: 'Noto Sans JP', sans-serif; font-size: 13px; flex-shrink: 0;
+    }
+    .step {
+      display: flex; gap: 14px; margin-bottom: 18px; align-items: flex-start;
+    }
+    .step-num {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      background: var(--cream-dark); color: var(--dark-green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12.5px; margin-top: 1px;
+    }
+    .step-text { font-size: 14.5px; }
+    .step-text b { color: var(--dark-green); }
+    .note {
+      background: var(--cream-dark); border-left: 3px solid var(--terracotta);
+      padding: 14px 18px; font-size: 13px; color: var(--text-mid);
+      border-radius: 0 4px 4px 0; margin-top: 16px;
+    }
+    .btn-link {
+      display: inline-block; margin-top: 10px;
+      background: var(--dark-green); color: #fff; text-decoration: none;
+      font-size: 13px; padding: 10px 22px; border-radius: 4px;
+    }
+    code {
+      background: var(--cream-dark); padding: 2px 7px; border-radius: 3px;
+      font-size: 13px; color: var(--terracotta);
+    }
+    .badge-sample {
+      display: inline-block; font-size: 10.5px; color: #fff;
+      border-radius: 10px; padding: 2px 10px; margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <p class="top-title">管理画面の使い方</p>
+  <p class="top-sub">宮崎奈津江サイト — 写真・活動レポート・届いた声の管理マニュアル</p>
+
+  <div class="toc">
+    <p class="toc-title">この中から見たい項目をクリックしてください</p>
+    <a href="#login">① ログインする</a>
+    <a href="#photo">② 写真を差し替える</a>
+    <a href="#report">③ 活動レポートを追加・削除する</a>
+    <a href="#voice">④ 届いた声を確認する</a>
+    <a href="#password">⑤ パスワードを変更する</a>
+    <a href="#logout">⑥ ログアウトする</a>
+    <a href="#trouble">⑦ うまくいかないとき</a>
+  </div>
+
+  <section id="login">
+    <h2><span class="num">1</span>ログインする</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p class="step-text">管理画面のページを開きます。<br><a class="btn-link" href="admin.html" target="_blank">管理画面を開く</a></p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p class="step-text">「<b>メールアドレス</b>」と「<b>パスワード</b>」を入力します。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <p class="step-text">「<b>ログイン</b>」ボタンを押します。</p>
+    </div>
+    <div class="note">パスワードが分からなくなった場合は、ログイン画面の「パスワードを忘れた場合」を押してください（詳しくは⑤をご覧ください）。</div>
+  </section>
+
+  <section id="photo">
+    <h2><span class="num">2</span>写真を差し替える</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p class="step-text">ログイン後の画面を下にスクロールし、「<b>写真の差し替え</b>」のカードを探します。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p class="step-text">差し替えたい写真の項目にある「<b>ファイルを選択</b>」を押します。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <p class="step-text">パソコンやスマホの中から、使いたい写真ファイルを選びます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span>
+      <p class="step-text">選ぶと自動的にアップロードが始まります。数秒待つと、左側の小さな写真（サムネイル）が新しい写真に変わります。これで完了です。</p>
+    </div>
+    <div class="note">
+      写真は自動的にサイズが調整されるので、特に編集せずそのまま選んで大丈夫です。<br>
+      反映には数秒〜長くて1分ほどかかることがあります。サイト側に反映されているか確認したい場合は、該当ページを再読み込みしてください。
+    </div>
+  </section>
+
+  <section id="report">
+    <h2><span class="num">3</span>活動レポートを追加・削除する</h2>
+    <p class="step-text" style="margin-bottom:18px;">「活動レポート」のページに表示される内容を、ここから追加・削除できます。</p>
+
+    <h3 style="font-size:15px; color:var(--dark-green); margin-bottom:14px;">追加するとき</h3>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p class="step-text">「<b>活動レポートの追加</b>」のカードを探します。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p class="step-text">「<b>カテゴリ</b>」を選びます。色分けは以下の通りです。<br>
+        <span class="badge-sample" style="background:#7a9e7e;">教育・子ども</span>
+        <span class="badge-sample" style="background:#c17f4a;">働き方</span>
+        <span class="badge-sample" style="background:#8b6f47;">食・農業</span>
+        <span class="badge-sample" style="background:#2e4a38;">自然・環境</span>
+        <span class="badge-sample" style="background:#c17f7f;">女性・若者</span>
+        <span class="badge-sample" style="background:#d4c5a9; color:#5a4a36;">その他</span>
+      </p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <p class="step-text">「<b>年</b>」「<b>タイトル</b>」「<b>説明文</b>」を入力します（すべて必須です）。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span>
+      <p class="step-text">「<b>追加する</b>」ボタンを押します。下の一覧にすぐ反映されます。</p>
+    </div>
+
+    <h3 style="font-size:15px; color:var(--dark-green); margin:28px 0 14px;">削除するとき</h3>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p class="step-text">「<b>活動レポート一覧</b>」のカードから、削除したい項目を見つけます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p class="step-text">右側の「<b>削除</b>」ボタンを押し、確認メッセージで「OK」を選びます。</p>
+    </div>
+    <div class="note">削除すると元に戻せません。間違えないようご注意ください。</div>
+  </section>
+
+  <section id="voice">
+    <h2><span class="num">4</span>届いた声を確認する</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p class="step-text">「<b>届いた声</b>」のカードに、サイトの「声を届ける」フォームから送られた内容が新しい順に表示されます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p class="step-text">「返信希望: ○○@example.com」と書かれている場合は、その方が返信を希望しているという意味です。メールアドレス宛に直接ご返信ください。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <p class="step-text">対応が済んだ声は、右側の「<b>削除</b>」ボタンで一覧から消すことができます（残しておいても問題ありません）。</p>
+    </div>
+    <div class="note">このフォームは自動でメール通知されません。時々この画面を開いて、新しい声が届いていないか確認してください。</div>
+  </section>
+
+  <section id="password">
+    <h2><span class="num">5</span>パスワードを変更する</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p class="step-text">ログイン後、画面右上の「<b>パスワード変更</b>」ボタンを押します。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p class="step-text">ログイン中のメールアドレス宛に、パスワード再設定用のメールが送られます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <p class="step-text">メール内のリンクを開き、新しいパスワードを設定してください。</p>
+    </div>
+    <div class="note">ログインできない状態でパスワードを忘れた場合は、ログイン画面の「パスワードを忘れた場合」のリンクから同じ手順で再設定できます。</div>
+  </section>
+
+  <section id="logout">
+    <h2><span class="num">6</span>ログアウトする</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p class="step-text">画面右上の「<b>ログアウト</b>」ボタンを押すだけです。</p>
+    </div>
+    <div class="note">共有のパソコンや人目につく場所で操作した場合は、作業が終わったら必ずログアウトしてください。</div>
+  </section>
+
+  <section id="trouble">
+    <h2><span class="num">7</span>うまくいかないとき</h2>
+    <div class="step">
+      <span class="step-num">・</span>
+      <p class="step-text"><b>ログインできない</b>：メールアドレス・パスワードの入力ミスが多い原因です。コピー＆ペーストでの入力もお試しください。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">・</span>
+      <p class="step-text"><b>写真が反映されない</b>：少し時間をおいてページを再読み込み（更新）してみてください。それでも変わらない場合は、写真のファイル形式（JPEGやPNG）をご確認ください。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">・</span>
+      <p class="step-text"><b>その他、分からないこと</b>：操作に困ったときは、画面のスクリーンショット（写真）を撮って、サイト担当者に送ってください。</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>
