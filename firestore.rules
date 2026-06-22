@@ -21,5 +21,15 @@ service cloud.firestore {
         && request.resource.data.dataUrl is string
         && request.resource.data.dataUrl.size() < 900000;
     }
+
+    match /voices/{voiceId} {
+      allow read, update, delete: if isAdmin();
+      allow create: if request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() < 200
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() < 4000;
+    }
   }
 }

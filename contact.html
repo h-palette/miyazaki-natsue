@@ -392,7 +392,7 @@
     <h2 class="sec-title fi fi-d1">フォームで、<br>声を届ける。</h2>
     <p class="body-text fi fi-d2">お名前と声の内容だけでも送れます。気負わず、気軽に書いてください。</p>
 
-    <form class="form-wrap fi fi-d1" id="voiceForm" action="mailto:miyazaki.nanairo@gmail.com" method="post" enctype="text/plain">
+    <form class="form-wrap fi fi-d1" id="voiceForm">
       <div class="f-field">
         <label class="f-label" for="f-name">お名前<span class="f-tag req">必須</span></label>
         <input class="f-input" type="text" id="f-name" name="お名前" required>
@@ -436,9 +436,13 @@
         </div>
       </div>
 
-      <p class="f-hint">いただいた声は miyazaki.nanairo@gmail.com 宛に届きます（送信先は後日差し替え予定です）。</p>
-      <button type="submit" class="btn-p">声を送る</button>
+      <p class="f-hint">いただいた声は宮崎が直接確認します。</p>
+      <button type="submit" class="btn-p" id="voiceSubmitBtn">声を送る</button>
+      <p id="voiceFormMsg" class="f-hint" style="margin-top:14px;"></p>
     </form>
+    <div id="voiceThanks" class="fi" style="display:none; text-align:center; padding:40px 0;">
+      <p class="body-text">声を届けてくださり、ありがとうございます。<br>できる限り読みます。</p>
+    </div>
   </div>
 </section>
 
@@ -494,6 +498,59 @@
     replyEmailWrap.classList.toggle('show', wantsReply);
     replyEmailInput.required = wantsReply;
     if (!wantsReply) replyEmailInput.value = '';
+  });
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    projectId: "miyazaki-natsue",
+    appId: "1:824408115855:web:3532e8f52e348f1bd83efa",
+    apiKey: "AIzaSyBTV1nh4-xK2TE73SIOb4IeUtIp2U8dhY8",
+    authDomain: "miyazaki-natsue.firebaseapp.com",
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const voiceForm = document.getElementById('voiceForm');
+  const voiceSubmitBtn = document.getElementById('voiceSubmitBtn');
+  const voiceFormMsg = document.getElementById('voiceFormMsg');
+  const voiceThanks = document.getElementById('voiceThanks');
+
+  voiceForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    voiceFormMsg.textContent = '';
+
+    const name = document.getElementById('f-name').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+    if (!name || !message) {
+      voiceFormMsg.textContent = 'お名前と声の内容は必須です。';
+      return;
+    }
+
+    voiceSubmitBtn.disabled = true;
+    voiceSubmitBtn.textContent = '送信中...';
+
+    try {
+      await addDoc(collection(db, 'voices'), {
+        name,
+        age: document.getElementById('f-age').value || '',
+        resident: document.getElementById('f-resident').value || '',
+        message,
+        wantsReply: document.getElementById('f-reply').value || '',
+        replyEmail: document.getElementById('f-email').value || '',
+        createdAt: Date.now(),
+      });
+      voiceForm.style.display = 'none';
+      voiceThanks.style.display = 'block';
+      voiceThanks.classList.add('on');
+    } catch (err) {
+      voiceFormMsg.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+      voiceSubmitBtn.disabled = false;
+      voiceSubmitBtn.textContent = '声を送る';
+    }
   });
 </script>
 </body>

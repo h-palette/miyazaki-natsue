@@ -142,6 +142,13 @@
       <div id="photoList"></div>
     </section>
 
+    <!-- 届いた声 -->
+    <section class="card">
+      <h2>届いた声</h2>
+      <p class="hint" style="margin-bottom:14px;">「声を届ける」フォームから送られた内容がここに表示されます。</p>
+      <div id="voiceList"><p class="hint">読み込み中...</p></div>
+    </section>
+
     <!-- 活動レポート管理 -->
     <section class="card">
       <h2>活動レポートの追加</h2>
@@ -281,6 +288,7 @@
       document.getElementById('whoAmI').textContent = user.email;
       renderPhotoList();
       renderReportList();
+      renderVoiceList();
     } else {
       loginView.style.display = 'block';
       adminView.style.display = 'none';
@@ -433,6 +441,41 @@
         await deleteDoc(doc(db, 'reports', docSnap.id));
         toast('削除しました');
         renderReportList();
+      });
+      listEl.appendChild(row);
+    });
+  }
+
+  // ── 届いた声 ──
+  async function renderVoiceList() {
+    const listEl = document.getElementById('voiceList');
+    const snap = await getDocs(query(collection(db, 'voices'), orderBy('createdAt', 'desc')));
+    if (snap.empty) {
+      listEl.innerHTML = '<p class="hint">まだ声が届いていません。</p>';
+      return;
+    }
+    listEl.innerHTML = '';
+    snap.forEach((docSnap) => {
+      const d = docSnap.data();
+      const date = d.createdAt ? new Date(d.createdAt).toLocaleString('ja-JP') : '';
+      const row = document.createElement('div');
+      row.className = 'report-item';
+      row.innerHTML = `
+        <div>
+          <div class="photo-meta">${date}　${d.age || ''}　${d.resident === 'はい' ? '美幌町在住' : d.resident === 'いいえ' ? '町外在住' : ''}</div>
+          <div class="report-item-title">${d.name || '(名前未記入)'}</div>
+          <div class="report-item-text" style="white-space:pre-wrap;">${d.message || ''}</div>
+          <div class="photo-meta" style="margin-top:6px;">${d.wantsReply === 'はい' ? `返信希望: ${d.replyEmail || '(メール未記入)'}` : '返信希望なし'}</div>
+        </div>
+        <div class="report-item-actions">
+          <button class="btn btn-small btn-danger" data-id="${docSnap.id}">削除</button>
+        </div>
+      `;
+      row.querySelector('button').addEventListener('click', async () => {
+        if (!confirm('この声を削除しますか？')) return;
+        await deleteDoc(doc(db, 'voices', docSnap.id));
+        toast('削除しました');
+        renderVoiceList();
       });
       listEl.appendChild(row);
     });
