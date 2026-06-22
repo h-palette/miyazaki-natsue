@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>声を届ける | 宮崎奈津江</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #7a9e7e;
+      --sage-light: #a8c4ab;
+      --terracotta: #c17f4a;
+      --cream: #faf7f2;
+      --cream-dark: #f3ede3;
+      --beige: #d4c5a9;
+      --beige-light: #e8dfd0;
+      --dark-green: #4a7a5a;
+      --text: #3d5245;
+      --text-mid: #6a8872;
+      --text-light: #9ab4a0;
+      --max-w: 680px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── フェードイン ── */
+    .fi { opacity: 0; transform: translateY(28px); transition: opacity .9s ease-out, transform .9s ease-out; }
+    .fi.on { opacity: 1; transform: none; }
+    .fi-d1 { transition-delay: .12s; }
+    .fi-d2 { transition-delay: .24s; }
+    .fi-d3 { transition-delay: .38s; }
+    .fi-d4 { transition-delay: .52s; }
+
+    /* ── ナビ ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 24px;
+      transition: background .5s, backdrop-filter .5s, box-shadow .5s;
+    }
+    nav.scrolled {
+      background: rgba(250,247,242,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 0 rgba(212,197,169,.35);
+    }
+    .logo { display: flex; flex-direction: column; gap: 1px; }
+    .logo-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px; letter-spacing: .1em;
+      color: #fff; transition: color .5s;
+    }
+    nav.scrolled .logo-jp { color: var(--dark-green); }
+    .logo-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9.5px; font-weight: 300; letter-spacing: .22em;
+      color: rgba(255,255,255,.55); transition: color .5s;
+    }
+    nav.scrolled .logo-en { color: var(--text-light); }
+
+    /* ハンバーガー */
+    .hbg { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 4px; z-index: 200; }
+    .hbg span { display: block; width: 22px; height: 1px; background: #fff; transition: all .35s; }
+    nav.scrolled .hbg span { background: var(--dark-green); }
+    .hbg.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); background: #fff !important; }
+    .hbg.open span:nth-child(2) { opacity: 0; }
+    .hbg.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background: #fff !important; }
+
+    /* メニュー */
+    .menu {
+      position: fixed; inset: 0; z-index: 150;
+      background: var(--dark-green);
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      padding: 0 40px;
+      opacity: 0; pointer-events: none; transition: opacity .4s;
+    }
+    .menu.open { opacity: 1; pointer-events: all; }
+    .menu-item {
+      display: block;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 24px; font-weight: 400;
+      color: var(--cream); letter-spacing: .08em;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(212,197,169,.12);
+      width: 100%;
+      opacity: 0; transform: translateX(-16px);
+      transition: opacity .4s, transform .4s, color .2s;
+    }
+    .menu-item:last-of-type { border-bottom: none; }
+    .menu-item:hover { color: var(--beige); }
+    .menu.open .menu-item { opacity: 1; transform: none; }
+    .menu.open .menu-item:nth-child(1) { transition-delay: .08s; }
+    .menu.open .menu-item:nth-child(2) { transition-delay: .15s; }
+    .menu.open .menu-item:nth-child(3) { transition-delay: .22s; }
+    .menu.open .menu-item:nth-child(4) { transition-delay: .29s; }
+    .menu.open .menu-item:nth-child(5) { transition-delay: .36s; }
+    .menu-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; letter-spacing: .25em;
+      color: rgba(212,197,169,.35);
+      margin-top: 40px;
+    }
+
+    /* ── 共通レイアウト ── */
+    .section { padding: 88px 0; }
+    .inner { max-width: var(--max-w); margin: 0 auto; padding: 0 28px; }
+    .eyebrow {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10.5px; letter-spacing: .32em;
+      color: var(--text-light); margin-bottom: 22px;
+    }
+    .sec-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(19px, 5vw, 25px);
+      font-weight: 400; line-height: 1.75; letter-spacing: .05em;
+      color: var(--dark-green); margin-bottom: 26px;
+    }
+    .body-text {
+      font-size: 14.5px; line-height: 2.05; color: var(--text);
+    }
+    .rule { width: 36px; height: 1px; background: var(--beige); margin: 32px 0; }
+
+    /* ── ボタン（流用） ── */
+    .btns { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .btn-p {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--terracotta); color: #fff;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13.5px; font-weight: 300; letter-spacing: .13em;
+      padding: 16px 40px; border-radius: 2px; width: 100%; max-width: 270px;
+      border: none; cursor: pointer;
+      transition: background .25s, transform .2s;
+    }
+    .btn-p:hover { background: #a86a3a; transform: translateY(-1px); }
+    .btn-s {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; color: var(--dark-green);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13.5px; font-weight: 300; letter-spacing: .13em;
+      padding: 15px 40px; border-radius: 2px;
+      border: 1px solid var(--sage);
+      width: 100%; max-width: 270px;
+      transition: background .25s, transform .2s;
+    }
+    .btn-s:hover { background: rgba(122,158,126,.1); transform: translateY(-1px); }
+
+    /* ── フッター ── */
+    footer {
+      background: var(--dark-green);
+      padding: 52px 28px 36px; text-align: center;
+    }
+    .f-logo-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 15px; color: var(--cream); letter-spacing: .1em; margin-bottom: 4px;
+    }
+    .f-logo-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10.5px; font-weight: 300; letter-spacing: .26em;
+      color: rgba(255,255,255,.28); margin-bottom: 32px;
+    }
+    .f-nav { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; margin-bottom: 32px; }
+    .f-nav a {
+      font-size: 12px; font-weight: 300; letter-spacing: .1em;
+      color: rgba(255,255,255,.45); transition: color .2s;
+    }
+    .f-nav a:hover { color: var(--beige); }
+    .f-copy {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10.5px; letter-spacing: .16em;
+      color: rgba(255,255,255,.2);
+    }
+
+    /* ── ページヘッダー（下層ページ用） ── */
+    .page-head { background: var(--dark-green); padding: 168px 0 76px; }
+    .page-head .eyebrow { color: rgba(212,197,169,.5); }
+    .page-head-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; letter-spacing: .3em;
+      color: rgba(212,197,169,.35); margin-bottom: 18px;
+    }
+    .page-head-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(20px, 6vw, 28px);
+      font-weight: 400; line-height: 1.85; letter-spacing: .06em;
+      color: var(--cream); margin-bottom: 24px;
+    }
+    .page-head-lead {
+      font-size: 13px; line-height: 2.1; letter-spacing: .03em;
+      color: rgba(250,247,242,.62); max-width: 480px;
+    }
+
+    /* ── 連絡方法カード ── */
+    .contact-grid { margin-top: 12px; display: flex; flex-direction: column; gap: 14px; }
+    .contact-card {
+      display: flex; align-items: center; gap: 18px;
+      padding: 24px 22px;
+      background: #fff;
+      border: 1px solid var(--beige-light);
+      border-radius: 3px;
+      transition: border-color .25s, transform .2s, box-shadow .25s;
+    }
+    .contact-card:hover {
+      border-color: var(--sage);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 22px rgba(74,122,90,.08);
+    }
+    .contact-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      color: var(--dark-green);
+    }
+    .contact-icon svg { width: 19px; height: 19px; }
+    .contact-body { display: flex; flex-direction: column; gap: 5px; }
+    .contact-label {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 15px; letter-spacing: .07em;
+      color: var(--dark-green);
+    }
+    .contact-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11.5px; letter-spacing: .1em;
+      color: var(--text-light);
+    }
+    .contact-arrow {
+      margin-left: auto;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; color: var(--text-light);
+      transition: transform .25s, color .25s;
+    }
+    .contact-card:hover .contact-arrow { color: var(--terracotta); transform: translateX(3px); }
+
+    /* ── フォーム ── */
+    .voice { background: var(--cream-dark); }
+    .form-wrap { margin-top: 16px; }
+    .f-field { margin-bottom: 26px; }
+    .f-label {
+      display: block;
+      font-size: 13px; letter-spacing: .07em;
+      color: var(--dark-green); margin-bottom: 11px;
+    }
+    .f-tag {
+      display: inline-block;
+      font-size: 10px; letter-spacing: .1em;
+      border-radius: 3px; padding: 2px 8px;
+      margin-left: 8px; vertical-align: middle;
+    }
+    .f-tag.req { color: #fff; background: var(--terracotta); }
+    .f-tag.opt { color: var(--text-light); border: 1px solid var(--beige); }
+    .f-input, .f-select, .f-textarea {
+      width: 100%;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 14px; font-weight: 300;
+      color: var(--text);
+      background: #fff;
+      border: 1px solid var(--beige);
+      border-radius: 2px;
+      padding: 14px 16px;
+      transition: border-color .25s;
+    }
+    .f-input:focus, .f-select:focus, .f-textarea:focus { outline: none; border-color: var(--sage); }
+    .f-textarea { resize: vertical; line-height: 1.85; }
+    .f-reply-email { display: none; margin-top: 16px; }
+    .f-reply-email.show { display: block; }
+    .f-hint {
+      font-size: 11.5px; letter-spacing: .04em;
+      color: var(--text-light); margin: -8px 0 28px;
+    }
+
+    /* ── デスクトップ対応 ── */
+    @media(min-width: 768px) {
+      nav { padding: 26px 52px; }
+      .inner { padding: 0 52px; }
+      .section { padding: 120px 0; }
+      .btns { flex-direction: row; justify-content: center; }
+      .btn-p, .btn-s { width: auto; }
+      footer { padding: 64px 52px 44px; }
+      .page-head { padding: 200px 0 100px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ナビ -->
+<nav id="nav">
+  <a href="index.html" class="logo">
+    <span class="logo-jp">宮崎奈津江</span>
+    <span class="logo-en">NATSUE MIYAZAKI</span>
+  </a>
+  <button class="hbg" id="hbg" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- メニューオーバーレイ -->
+<div class="menu" id="menu">
+  <a href="index.html" class="menu-item">トップ</a>
+  <a href="about.html" class="menu-item">わたしのこれまで</a>
+  <a href="bihoro.html" class="menu-item">美幌への想い</a>
+  <a href="report.html" class="menu-item">活動レポート</a>
+  <a href="contact.html" class="menu-item">声を届ける</a>
+  <span class="menu-sub">BIHORO · HOKKAIDO</span>
+</div>
+
+<!-- ページヘッダー -->
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow fi">VOICE</span>
+    <p class="page-head-en fi fi-d1">LET'S TALK TOGETHER</p>
+    <h1 class="page-head-title fi fi-d1">
+      私たち大人がもっと輝いて、<br>
+      若者や子どもに「やっぱり美幌」<br>
+      と思わせましょう。
+    </h1>
+    <p class="page-head-lead fi fi-d2">
+      どうしたらいいか、一緒に策を練りましょう。<br>
+      あなたの日常の中にある声が、議会を動かすことがあります。<br>
+      できる限り読みます。
+    </p>
+  </div>
+</section>
+
+<!-- 連絡方法 -->
+<section class="section">
+  <div class="inner">
+    <span class="eyebrow fi">3 WAYS TO REACH ME</span>
+    <h2 class="sec-title fi fi-d1">声の届け方は、<br>3つあります。</h2>
+    <p class="body-text fi fi-d2">どれも、同じ気持ちで読んでいます。伝えやすい方法を選んでください。</p>
+    <div class="contact-grid fi fi-d1">
+      <a href="https://www.instagram.com/miyazakina2023" class="contact-card" target="_blank" rel="noopener">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="contact-body">
+          <span class="contact-label">Instagram DM</span>
+          <span class="contact-sub">@miyazakina2023 ── DMを送る</span>
+        </span>
+        <span class="contact-arrow">→</span>
+      </a>
+      <a href="mailto:miyazaki.nanairo@gmail.com" class="contact-card">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="M3 7l9 6 9-6"/>
+          </svg>
+        </span>
+        <span class="contact-body">
+          <span class="contact-label">メール</span>
+          <span class="contact-sub">miyazaki.nanairo@gmail.com ── メールを送る</span>
+        </span>
+        <span class="contact-arrow">→</span>
+      </a>
+      <a href="#voice-form" class="contact-card">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+          </svg>
+        </span>
+        <span class="contact-body">
+          <span class="contact-label">フォームで送る</span>
+          <span class="contact-sub">下のフォームから直接送信</span>
+        </span>
+        <span class="contact-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- フォーム -->
+<section class="section voice" id="voice-form">
+  <div class="inner">
+    <span class="eyebrow fi">VOICE FORM</span>
+    <h2 class="sec-title fi fi-d1">フォームで、<br>声を届ける。</h2>
+    <p class="body-text fi fi-d2">お名前と声の内容だけでも送れます。気負わず、気軽に書いてください。</p>
+
+    <form class="form-wrap fi fi-d1" id="voiceForm" action="mailto:miyazaki.nanairo@gmail.com" method="post" enctype="text/plain">
+      <div class="f-field">
+        <label class="f-label" for="f-name">お名前<span class="f-tag req">必須</span></label>
+        <input class="f-input" type="text" id="f-name" name="お名前" required>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label" for="f-age">年代<span class="f-tag opt">任意</span></label>
+        <select class="f-select" id="f-age" name="年代">
+          <option value="">選択してください</option>
+          <option value="20代">20代</option>
+          <option value="30代">30代</option>
+          <option value="40代">40代</option>
+          <option value="50代以上">50代以上</option>
+        </select>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label" for="f-resident">美幌町在住ですか？<span class="f-tag opt">任意</span></label>
+        <select class="f-select" id="f-resident" name="美幌町在住ですか">
+          <option value="">選択してください</option>
+          <option value="はい">はい</option>
+          <option value="いいえ">いいえ</option>
+        </select>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label" for="f-message">声の内容<span class="f-tag req">必須</span></label>
+        <textarea class="f-textarea" id="f-message" name="声の内容" rows="4" required></textarea>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label" for="f-reply">返信を希望しますか？<span class="f-tag opt">任意</span></label>
+        <select class="f-select" id="f-reply" name="返信を希望しますか">
+          <option value="">選択してください</option>
+          <option value="はい">はい</option>
+          <option value="いいえ">いいえ</option>
+        </select>
+        <div class="f-reply-email" id="replyEmailWrap">
+          <label class="f-label" for="f-email">返信用メールアドレス</label>
+          <input class="f-input" type="email" id="f-email" name="返信用メールアドレス" placeholder="your-address@example.com">
+        </div>
+      </div>
+
+      <p class="f-hint">いただいた声は miyazaki.nanairo@gmail.com 宛に届きます（送信先は後日差し替え予定です）。</p>
+      <button type="submit" class="btn-p">声を送る</button>
+    </form>
+  </div>
+</section>
+
+<!-- フッター -->
+<footer>
+  <p class="f-logo-jp">宮崎奈津江</p>
+  <p class="f-logo-en">NATSUE MIYAZAKI</p>
+  <nav class="f-nav">
+    <a href="index.html">トップ</a>
+    <a href="about.html">わたしのこれまで</a>
+    <a href="bihoro.html">美幌への想い</a>
+    <a href="report.html">活動レポート</a>
+    <a href="contact.html">声を届ける</a>
+  </nav>
+  <p class="f-copy">&copy; 2026 Natsue Miyazaki. All rights reserved.</p>
+</footer>
+
+<script>
+  // ハンバーガー
+  const hbg = document.getElementById('hbg');
+  const menu = document.getElementById('menu');
+  hbg.addEventListener('click', () => {
+    hbg.classList.toggle('open');
+    menu.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  });
+  menu.querySelectorAll('.menu-item').forEach(a => {
+    a.addEventListener('click', () => {
+      hbg.classList.remove('open');
+      menu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // スクロールでナビ変色
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // フェードイン
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fi').forEach(el => io.observe(el));
+
+  // 返信希望が「はい」のときだけメールアドレス欄を表示
+  const replySelect = document.getElementById('f-reply');
+  const replyEmailWrap = document.getElementById('replyEmailWrap');
+  const replyEmailInput = document.getElementById('f-email');
+  replySelect.addEventListener('change', () => {
+    const wantsReply = replySelect.value === 'はい';
+    replyEmailWrap.classList.toggle('show', wantsReply);
+    replyEmailInput.required = wantsReply;
+    if (!wantsReply) replyEmailInput.value = '';
+  });
+</script>
+</body>
+</html>

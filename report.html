@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>活動レポート | 宮崎奈津江</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #7a9e7e;
+      --sage-light: #a8c4ab;
+      --terracotta: #c17f4a;
+      --cream: #faf7f2;
+      --cream-dark: #f3ede3;
+      --beige: #d4c5a9;
+      --beige-light: #e8dfd0;
+      --dark-green: #4a7a5a;
+      --text: #3d5245;
+      --text-mid: #6a8872;
+      --text-light: #9ab4a0;
+      --max-w: 680px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── フェードイン ── */
+    .fi { opacity: 0; transform: translateY(28px); transition: opacity .9s ease-out, transform .9s ease-out; }
+    .fi.on { opacity: 1; transform: none; }
+    .fi-d1 { transition-delay: .12s; }
+    .fi-d2 { transition-delay: .24s; }
+    .fi-d3 { transition-delay: .38s; }
+    .fi-d4 { transition-delay: .52s; }
+
+    /* ── ナビ ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 24px;
+      transition: background .5s, backdrop-filter .5s, box-shadow .5s;
+    }
+    nav.scrolled {
+      background: rgba(250,247,242,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 0 rgba(212,197,169,.35);
+    }
+    .logo { display: flex; flex-direction: column; gap: 1px; }
+    .logo-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px; letter-spacing: .1em;
+      color: #fff; transition: color .5s;
+    }
+    nav.scrolled .logo-jp { color: var(--dark-green); }
+    .logo-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9.5px; font-weight: 300; letter-spacing: .22em;
+      color: rgba(255,255,255,.55); transition: color .5s;
+    }
+    nav.scrolled .logo-en { color: var(--text-light); }
+
+    /* ハンバーガー */
+    .hbg { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 4px; z-index: 200; }
+    .hbg span { display: block; width: 22px; height: 1px; background: #fff; transition: all .35s; }
+    nav.scrolled .hbg span { background: var(--dark-green); }
+    .hbg.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); background: #fff !important; }
+    .hbg.open span:nth-child(2) { opacity: 0; }
+    .hbg.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background: #fff !important; }
+
+    /* メニュー */
+    .menu {
+      position: fixed; inset: 0; z-index: 150;
+      background: var(--dark-green);
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      padding: 0 40px;
+      opacity: 0; pointer-events: none; transition: opacity .4s;
+    }
+    .menu.open { opacity: 1; pointer-events: all; }
+    .menu-item {
+      display: block;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 24px; font-weight: 400;
+      color: var(--cream); letter-spacing: .08em;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(212,197,169,.12);
+      width: 100%;
+      opacity: 0; transform: translateX(-16px);
+      transition: opacity .4s, transform .4s, color .2s;
+    }
+    .menu-item:last-of-type { border-bottom: none; }
+    .menu-item:hover { color: var(--beige); }
+    .menu.open .menu-item { opacity: 1; transform: none; }
+    .menu.open .menu-item:nth-child(1) { transition-delay: .08s; }
+    .menu.open .menu-item:nth-child(2) { transition-delay: .15s; }
+    .menu.open .menu-item:nth-child(3) { transition-delay: .22s; }
+    .menu.open .menu-item:nth-child(4) { transition-delay: .29s; }
+    .menu.open .menu-item:nth-child(5) { transition-delay: .36s; }
+    .menu-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; letter-spacing: .25em;
+      color: rgba(212,197,169,.35);
+      margin-top: 40px;
+    }
+
+    /* ── 共通レイアウト ── */
+    .section { padding: 88px 0; }
+    .inner { max-width: var(--max-w); margin: 0 auto; padding: 0 28px; }
+    .eyebrow {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10.5px; letter-spacing: .32em;
+      color: var(--text-light); margin-bottom: 22px;
+    }
+    .sec-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(19px, 5vw, 25px);
+      font-weight: 400; line-height: 1.75; letter-spacing: .05em;
+      color: var(--dark-green); margin-bottom: 26px;
+    }
+    .body-text {
+      font-size: 14.5px; line-height: 2.05; color: var(--text);
+    }
+    .rule { width: 36px; height: 1px; background: var(--beige); margin: 32px 0; }
+
+    /* ── 実績カード（流用） ── */
+    .card-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px; letter-spacing: .28em;
+      color: var(--terracotta); margin-bottom: 10px;
+    }
+
+    /* ── CTA ボタン（流用） ── */
+    .btns { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .btn-p {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--terracotta); color: #fff;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13.5px; font-weight: 300; letter-spacing: .13em;
+      padding: 16px 40px; border-radius: 2px; width: 100%; max-width: 270px;
+      transition: background .25s, transform .2s;
+    }
+    .btn-p:hover { background: #a86a3a; transform: translateY(-1px); }
+    .btn-s {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; color: var(--dark-green);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13.5px; font-weight: 300; letter-spacing: .13em;
+      padding: 15px 40px; border-radius: 2px;
+      border: 1px solid var(--sage);
+      width: 100%; max-width: 270px;
+      transition: background .25s, transform .2s;
+    }
+    .btn-s:hover { background: rgba(122,158,126,.1); transform: translateY(-1px); }
+
+    /* ── フッター ── */
+    footer {
+      background: var(--dark-green);
+      padding: 52px 28px 36px; text-align: center;
+    }
+    .f-logo-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 15px; color: var(--cream); letter-spacing: .1em; margin-bottom: 4px;
+    }
+    .f-logo-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10.5px; font-weight: 300; letter-spacing: .26em;
+      color: rgba(255,255,255,.28); margin-bottom: 32px;
+    }
+    .f-nav { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; margin-bottom: 32px; }
+    .f-nav a {
+      font-size: 12px; font-weight: 300; letter-spacing: .1em;
+      color: rgba(255,255,255,.45); transition: color .2s;
+    }
+    .f-nav a:hover { color: var(--beige); }
+    .f-copy {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10.5px; letter-spacing: .16em;
+      color: rgba(255,255,255,.2);
+    }
+
+    /* ── ページヘッダー（下層ページ用） ── */
+    .page-head { background: var(--dark-green); padding: 168px 0 72px; }
+    .page-head .eyebrow { color: rgba(212,197,169,.5); }
+    .page-head-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(24px, 7vw, 36px);
+      font-weight: 400; line-height: 1.7; letter-spacing: .06em;
+      color: var(--cream); margin-bottom: 16px;
+    }
+    .page-head-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; letter-spacing: .3em;
+      color: rgba(212,197,169,.35); margin-bottom: 22px;
+    }
+    .page-head-lead {
+      font-size: 13.5px; line-height: 2; letter-spacing: .04em;
+      color: rgba(250,247,242,.62); max-width: 480px;
+    }
+
+    /* ── カテゴリフィルター ── */
+    .filter-wrap { position: relative; }
+    .filter-wrap::before,
+    .filter-wrap::after {
+      content: ''; position: absolute; top: 0; width: 32px; height: calc(100% - 18px);
+      pointer-events: none; z-index: 1; transition: opacity .25s;
+    }
+    .filter-wrap::before {
+      left: 0; opacity: 0;
+      background: linear-gradient(to right, var(--cream), rgba(250,247,242,0));
+    }
+    .filter-wrap::after {
+      right: 0;
+      background: linear-gradient(to left, var(--cream), rgba(250,247,242,0));
+    }
+    .filter-wrap.scrolled::before { opacity: 1; }
+    .filter-wrap.at-end::after { opacity: 0; }
+    .filter-bar {
+      display: flex; gap: 10px;
+      overflow-x: auto;
+      padding: 2px 2px 18px;
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      flex-shrink: 0;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 12.5px; font-weight: 300; letter-spacing: .08em;
+      color: var(--text-mid);
+      background: #fff;
+      border: 1px solid var(--beige);
+      border-radius: 20px;
+      padding: 9px 20px;
+      cursor: pointer;
+      transition: background .25s, border-color .25s, color .25s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: var(--sage); color: var(--dark-green); }
+    .filter-btn.active {
+      background: var(--dark-green);
+      border-color: var(--dark-green);
+      color: var(--cream);
+    }
+
+    /* ── タイムライン（年区切り） ── */
+    .tl-group { margin-top: 8px; }
+    .tl-year-row {
+      display: flex; align-items: baseline; gap: 16px;
+      margin: 56px 0 26px;
+    }
+    .tl-group:first-child .tl-year-row { margin-top: 8px; }
+    .tl-year-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 300; letter-spacing: .06em;
+      color: var(--dark-green);
+    }
+    .tl-year-suffix {
+      font-size: 12px; letter-spacing: .12em; color: var(--text-light);
+    }
+    .tl-year-line { flex: 1; height: 1px; background: var(--beige); }
+
+    /* ── レポート項目 ── */
+    .report-item {
+      padding: 26px 24px 24px;
+      background: #fff;
+      border-left: 2px solid var(--beige);
+      box-shadow: 0 2px 16px rgba(74,122,90,.05);
+      margin-bottom: 14px;
+    }
+    .report-item.hidden { display: none; }
+    .report-badge {
+      display: inline-block;
+      font-size: 11px; letter-spacing: .1em;
+      border-radius: 20px;
+      padding: 4px 14px;
+      margin-bottom: 14px;
+    }
+    .badge-edu    { background: #7a9e7e; color: #fff; }
+    .badge-work   { background: #c17f4a; color: #fff; }
+    .badge-food   { background: #8b6f47; color: #fff; }
+    .badge-nature { background: #2e4a38; color: #fff; }
+    .badge-women  { background: #c17f7f; color: #fff; }
+    .badge-other  { background: #d4c5a9; color: #5a4a36; }
+    .report-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 15.5px; font-weight: 400; line-height: 1.65;
+      color: var(--dark-green); margin-bottom: 10px;
+    }
+    .report-text { font-size: 13.5px; line-height: 1.95; color: var(--text); }
+
+    /* ── デスクトップ対応 ── */
+    @media(min-width: 768px) {
+      nav { padding: 26px 52px; }
+      .inner { padding: 0 52px; }
+      .section { padding: 120px 0; }
+      .btns { flex-direction: row; justify-content: center; }
+      .btn-p, .btn-s { width: auto; }
+      footer { padding: 64px 52px 44px; }
+      .page-head { padding: 200px 0 96px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ナビ -->
+<nav id="nav">
+  <a href="index.html" class="logo">
+    <span class="logo-jp">宮崎奈津江</span>
+    <span class="logo-en">NATSUE MIYAZAKI</span>
+  </a>
+  <button class="hbg" id="hbg" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- メニューオーバーレイ -->
+<div class="menu" id="menu">
+  <a href="index.html" class="menu-item">トップ</a>
+  <a href="about.html" class="menu-item">わたしのこれまで</a>
+  <a href="bihoro.html" class="menu-item">美幌への想い</a>
+  <a href="report.html" class="menu-item">活動レポート</a>
+  <a href="contact.html" class="menu-item">声を届ける</a>
+  <span class="menu-sub">BIHORO · HOKKAIDO</span>
+</div>
+
+<!-- ページヘッダー -->
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow fi">REPORT</span>
+    <h1 class="page-head-title fi fi-d1">活動レポート</h1>
+    <p class="page-head-en fi fi-d2">WHAT I'VE BEEN DOING</p>
+    <p class="page-head-lead fi fi-d2">議会での質問や提言が、美幌の暮らしを少しずつ変えています。これまでの活動を振り返ります。</p>
+  </div>
+</section>
+
+<!-- レポート一覧 -->
+<section class="section">
+  <div class="inner">
+    <span class="eyebrow fi">FILTER BY CATEGORY</span>
+    <div class="filter-wrap fi fi-d1" id="filterWrap">
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-filter="すべて">すべて</button>
+        <button class="filter-btn" data-filter="教育・子ども">教育・子ども</button>
+        <button class="filter-btn" data-filter="働き方">働き方</button>
+        <button class="filter-btn" data-filter="食・農業">食・農業</button>
+        <button class="filter-btn" data-filter="自然・環境">自然・環境</button>
+        <button class="filter-btn" data-filter="女性・若者">女性・若者</button>
+        <button class="filter-btn" data-filter="その他">その他</button>
+      </div>
+    </div>
+    <div class="rule fi fi-d1"></div>
+
+    <!-- 2026年 -->
+    <div class="tl-group" data-year="2026">
+      <div class="tl-year-row fi">
+        <span class="tl-year-num">2026</span>
+        <span class="tl-year-suffix">YEAR</span>
+        <span class="tl-year-line"></span>
+      </div>
+      <div class="report-item fi" data-category="教育・子ども">
+        <span class="report-badge badge-edu">教育・子ども</span>
+        <h3 class="report-title">美幌高校をまちづくりの軸に据える、根拠と提案</h3>
+        <p class="report-text">「美幌高校はまちづくりの軸である」――この命題を、数字と学術的根拠で示し、行政の縦割りを超えた横断的な推進体制の構築を求めました。</p>
+      </div>
+    </div>
+
+    <!-- 2024年 -->
+    <div class="tl-group" data-year="2024">
+      <div class="tl-year-row fi">
+        <span class="tl-year-num">2024</span>
+        <span class="tl-year-suffix">YEAR</span>
+        <span class="tl-year-line"></span>
+      </div>
+      <div class="report-item fi" data-category="教育・子ども">
+        <span class="report-badge badge-edu">教育・子ども</span>
+        <h3 class="report-title">フリースクール支援の実現</h3>
+        <p class="report-text">学校に行けない子どもたちの居場所と学びを守るための支援が動き始めました。</p>
+      </div>
+      <div class="report-item fi fi-d1" data-category="食・農業">
+        <span class="report-badge badge-food">食・農業</span>
+        <h3 class="report-title">地元野菜の学校給食への導入推進</h3>
+        <p class="report-text">美幌で育った野菜が、子どもたちの給食に並ぶ機会を増やす取り組みを続けています。</p>
+      </div>
+      <div class="report-item fi fi-d2" data-category="働き方">
+        <span class="report-badge badge-work">働き方</span>
+        <h3 class="report-title">議会オンライン参加の推進</h3>
+        <p class="report-text">子育て中・通院中でも議会に参加できる環境整備を提案。</p>
+      </div>
+    </div>
+
+    <!-- 2023年 -->
+    <div class="tl-group" data-year="2023">
+      <div class="tl-year-row fi">
+        <span class="tl-year-num">2023</span>
+        <span class="tl-year-suffix">YEAR</span>
+        <span class="tl-year-line"></span>
+      </div>
+      <div class="report-item fi" data-category="自然・環境">
+        <span class="report-badge badge-nature">自然・環境</span>
+        <h3 class="report-title">美幌の自然環境保全についての一般質問</h3>
+        <p class="report-text">美幌の豊かな自然を次世代に残すための施策を議会で提案。</p>
+      </div>
+      <div class="report-item fi fi-d1" data-category="女性・若者">
+        <span class="report-badge badge-women">女性・若者</span>
+        <h3 class="report-title">女性が働きやすい環境整備についての提言</h3>
+        <p class="report-text">ライフステージに合わせて働ける環境づくりを訴えました。</p>
+      </div>
+      <div class="report-item fi fi-d2" data-category="その他">
+        <span class="report-badge badge-other">その他</span>
+        <h3 class="report-title">厚沢部町への視察レポート</h3>
+        <p class="report-text">先進的な取り組みを行う厚沢部町を視察し、美幌への応用を検討。</p>
+      </div>
+    </div>
+
+    <p class="body-text fi" id="emptyMsg" style="display:none; text-align:center; color: var(--text-light); margin-top: 32px;">
+      該当するレポートがまだありません。
+    </p>
+
+    <div class="rule fi" style="margin: 56px auto 28px;"></div>
+    <div class="btns fi">
+      <a href="contact.html" class="btn-p">声を届ける</a>
+      <a href="bihoro.html" class="btn-s">美幌への想いを読む</a>
+    </div>
+  </div>
+</section>
+
+<!-- フッター -->
+<footer>
+  <p class="f-logo-jp">宮崎奈津江</p>
+  <p class="f-logo-en">NATSUE MIYAZAKI</p>
+  <nav class="f-nav">
+    <a href="index.html">トップ</a>
+    <a href="about.html">わたしのこれまで</a>
+    <a href="bihoro.html">美幌への想い</a>
+    <a href="report.html">活動レポート</a>
+    <a href="contact.html">声を届ける</a>
+  </nav>
+  <p class="f-copy">&copy; 2026 Natsue Miyazaki. All rights reserved.</p>
+</footer>
+
+<script>
+  // ハンバーガー
+  const hbg = document.getElementById('hbg');
+  const menu = document.getElementById('menu');
+  hbg.addEventListener('click', () => {
+    hbg.classList.toggle('open');
+    menu.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  });
+  menu.querySelectorAll('.menu-item').forEach(a => {
+    a.addEventListener('click', () => {
+      hbg.classList.remove('open');
+      menu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // スクロールでナビ変色
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // フェードイン
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fi').forEach(el => io.observe(el));
+
+  // フィルターバーの横スクロール端フェード
+  const filterWrap = document.getElementById('filterWrap');
+  const filterBar = document.getElementById('filterBar');
+  function updateFilterFade() {
+    const maxScroll = filterBar.scrollWidth - filterBar.clientWidth;
+    filterWrap.classList.toggle('scrolled', filterBar.scrollLeft > 4);
+    filterWrap.classList.toggle('at-end', filterBar.scrollLeft >= maxScroll - 4);
+  }
+  filterBar.addEventListener('scroll', updateFilterFade, { passive: true });
+  window.addEventListener('resize', updateFilterFade);
+  updateFilterFade();
+
+  // カテゴリフィルター
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const reportItems = document.querySelectorAll('.report-item');
+  const tlGroups = document.querySelectorAll('.tl-group');
+  const emptyMsg = document.getElementById('emptyMsg');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.filter;
+
+      reportItems.forEach(item => {
+        const show = cat === 'すべて' || item.dataset.category === cat;
+        item.classList.toggle('hidden', !show);
+      });
+
+      let anyVisible = false;
+      tlGroups.forEach(group => {
+        const visibleInGroup = [...group.querySelectorAll('.report-item')].some(item => !item.classList.contains('hidden'));
+        group.style.display = visibleInGroup ? '' : 'none';
+        if (visibleInGroup) anyVisible = true;
+      });
+      emptyMsg.style.display = anyVisible ? 'none' : 'block';
+    });
+  });
+</script>
+</body>
+</html>
