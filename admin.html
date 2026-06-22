@@ -152,7 +152,7 @@
 
     <!-- 活動レポート管理 -->
     <section class="card">
-      <h2>活動レポートの追加</h2>
+      <h2 id="reportFormTitle">活動レポートの追加</h2>
       <div class="field">
         <label for="rCategory">カテゴリ</label>
         <select id="rCategory">
@@ -177,6 +177,7 @@
         <textarea id="rText" placeholder="1〜2文程度の説明"></textarea>
       </div>
       <button class="btn btn-primary" id="rAddBtn">追加する</button>
+      <button class="btn" id="rCancelBtn" style="display:none;">編集をやめる</button>
       <p id="reportMsg" class="msg ok"></p>
     </section>
 
@@ -195,7 +196,7 @@
     getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
   import {
-    getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, deleteDoc, query, orderBy
+    getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, orderBy
   } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -383,7 +384,39 @@
   }
 
   // ── 活動レポート管理 ──
-  document.getElementById('rAddBtn').addEventListener('click', async () => {
+  let editingReportId = null;
+  const reportFormTitle = document.getElementById('reportFormTitle');
+  const rAddBtn = document.getElementById('rAddBtn');
+  const rCancelBtn = document.getElementById('rCancelBtn');
+
+  function resetReportForm() {
+    editingReportId = null;
+    document.getElementById('rCategory').value = '教育・子ども';
+    document.getElementById('rYear').value = '';
+    document.getElementById('rTitle').value = '';
+    document.getElementById('rText').value = '';
+    reportFormTitle.textContent = '活動レポートの追加';
+    rAddBtn.textContent = '追加する';
+    rCancelBtn.style.display = 'none';
+  }
+
+  function startEditReport(id, d) {
+    editingReportId = id;
+    document.getElementById('rCategory').value = d.category || '教育・子ども';
+    document.getElementById('rYear').value = d.year || '';
+    document.getElementById('rTitle').value = d.title || '';
+    document.getElementById('rText').value = d.text || '';
+    reportFormTitle.textContent = '活動レポートの編集';
+    rAddBtn.textContent = '更新する';
+    rCancelBtn.style.display = 'inline-block';
+    reportFormTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  rCancelBtn.addEventListener('click', () => {
+    resetReportForm();
+  });
+
+  rAddBtn.addEventListener('click', async () => {
     const category = document.getElementById('rCategory').value;
     const year = document.getElementById('rYear').value.trim();
     const title = document.getElementById('rTitle').value.trim();
@@ -397,19 +430,29 @@
     }
 
     try {
-      await addDoc(collection(db, 'reports'), {
-        category, year: Number(year), title, text, createdAt: Date.now()
-      });
-      msg.classList.remove('error'); msg.classList.add('ok');
-      msg.textContent = '追加しました。';
-      document.getElementById('rYear').value = '';
-      document.getElementById('rTitle').value = '';
-      document.getElementById('rText').value = '';
+      if (editingReportId) {
+        await updateDoc(doc(db, 'reports', editingReportId), {
+          category, year: Number(year), title, text
+        });
+        msg.classList.remove('error'); msg.classList.add('ok');
+        msg.textContent = '更新しました。';
+        toast('活動レポートを更新しました');
+        resetReportForm();
+      } else {
+        await addDoc(collection(db, 'reports'), {
+          category, year: Number(year), title, text, createdAt: Date.now()
+        });
+        msg.classList.remove('error'); msg.classList.add('ok');
+        msg.textContent = '追加しました。';
+        toast('活動レポートを追加しました');
+        document.getElementById('rYear').value = '';
+        document.getElementById('rTitle').value = '';
+        document.getElementById('rText').value = '';
+      }
       renderReportList();
-      toast('活動レポートを追加しました');
     } catch (e) {
       msg.classList.remove('ok'); msg.classList.add('error');
-      msg.textContent = '追加に失敗しました。';
+      msg.textContent = editingReportId ? '更新に失敗しました。' : '追加に失敗しました。';
     }
   });
 
@@ -434,12 +477,17 @@
           <div class="report-item-text">${d.text || ''}</div>
         </div>
         <div class="report-item-actions">
-          <button class="btn btn-small btn-danger" data-id="${docSnap.id}">削除</button>
+          <button class="btn btn-small" data-action="edit" data-id="${docSnap.id}">編集</button>
+          <button class="btn btn-small btn-danger" data-action="delete" data-id="${docSnap.id}">削除</button>
         </div>
       `;
-      row.querySelector('button').addEventListener('click', async () => {
+      row.querySelector('[data-action="edit"]').addEventListener('click', () => {
+        startEditReport(docSnap.id, d);
+      });
+      row.querySelector('[data-action="delete"]').addEventListener('click', async () => {
         if (!confirm('このレポートを削除しますか？')) return;
         await deleteDoc(doc(db, 'reports', docSnap.id));
+        if (editingReportId === docSnap.id) resetReportForm();
         toast('削除しました');
         renderReportList();
       });
