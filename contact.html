@@ -519,6 +519,11 @@
   const voiceFormMsg = document.getElementById('voiceFormMsg');
   const voiceThanks = document.getElementById('voiceThanks');
 
+  // サポーターからのアクセスの場合、内容欄にひと言を自動入力
+  if (new URLSearchParams(window.location.search).get('type') === 'supporter') {
+    document.getElementById('f-message').value = 'サポーターとして応援したいです。\n\n';
+  }
+
   voiceForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     voiceFormMsg.textContent = '';
@@ -541,6 +546,7 @@
         message,
         wantsReply: document.getElementById('f-reply').value || '',
         replyEmail: document.getElementById('f-email').value || '',
+        source: new URLSearchParams(window.location.search).get('type') === 'supporter' ? 'supporter' : 'voice',
         createdAt: Date.now(),
       });
       voiceForm.style.display = 'none';

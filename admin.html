@@ -523,7 +523,7 @@
       row.className = 'report-item';
       row.innerHTML = `
         <div>
-          <div class="photo-meta">${date}　${d.age || ''}　${d.resident === 'はい' ? '美幌町在住' : d.resident === 'いいえ' ? '町外在住' : ''}</div>
+          <div class="photo-meta">${date}　${d.age || ''}　${d.resident === 'はい' ? '美幌町在住' : d.resident === 'いいえ' ? '町外在住' : ''}${d.source === 'supporter' ? '　<span class="badge" style="background:#c17f4a;">サポーター</span>' : ''}</div>
           <div class="report-item-title">${d.name || '(名前未記入)'}</div>
           <div class="report-item-text" style="white-space:pre-wrap;">${d.message || ''}</div>
           <div class="photo-meta" style="margin-top:6px;">${d.wantsReply === 'はい' ? `返信希望: ${d.replyEmail || '(メール未記入)'}` : '返信希望なし'}</div>
