@@ -284,12 +284,9 @@
       padding: 4px 14px;
       margin-bottom: 14px;
     }
-    .badge-edu    { background: #7a9e7e; color: #fff; }
-    .badge-work   { background: #c17f4a; color: #fff; }
-    .badge-food   { background: #8b6f47; color: #fff; }
-    .badge-nature { background: #2e4a38; color: #fff; }
-    .badge-women  { background: #c17f7f; color: #fff; }
-    .badge-other  { background: #d4c5a9; color: #5a4a36; }
+    .badge-general  { background: #7a9e7e; color: #fff; }
+    .badge-voice    { background: #c17f4a; color: #fff; }
+    .badge-research { background: #2e4a38; color: #fff; }
     .report-title {
       font-family: 'Noto Serif JP', serif;
       font-size: 15.5px; font-weight: 400; line-height: 1.65;
@@ -338,7 +335,7 @@
     <span class="eyebrow fi">REPORT</span>
     <h1 class="page-head-title fi fi-d1">活動レポート</h1>
     <p class="page-head-en fi fi-d2">WHAT I'VE BEEN DOING</p>
-    <p class="page-head-lead fi fi-d2">議会での質問や提言が、美幌の暮らしを少しずつ変えています。これまでの活動を振り返ります。</p>
+    <p class="page-head-lead fi fi-d2">議会での活動、町民の方からいただいた声、視察や調査のこと。活動のすべてを、ここに記録します。</p>
   </div>
 </section>
 
@@ -349,12 +346,9 @@
     <div class="filter-wrap fi fi-d1" id="filterWrap">
       <div class="filter-bar" id="filterBar">
         <button class="filter-btn active" data-filter="すべて">すべて</button>
-        <button class="filter-btn" data-filter="教育・子ども">教育・子ども</button>
-        <button class="filter-btn" data-filter="働き方">働き方</button>
-        <button class="filter-btn" data-filter="食・農業">食・農業</button>
-        <button class="filter-btn" data-filter="自然・環境">自然・環境</button>
-        <button class="filter-btn" data-filter="女性・若者">女性・若者</button>
-        <button class="filter-btn" data-filter="その他">その他</button>
+        <button class="filter-btn" data-filter="一般質問">一般質問</button>
+        <button class="filter-btn" data-filter="町民の声">町民の声</button>
+        <button class="filter-btn" data-filter="視察・調査">視察・調査</button>
       </div>
     </div>
     <div class="rule fi fi-d1"></div>
@@ -446,12 +440,9 @@
   const db = getFirestore(app);
 
   const BADGE_CLASS = {
-    '教育・子ども': 'badge-edu',
-    '働き方': 'badge-work',
-    '食・農業': 'badge-food',
-    '自然・環境': 'badge-nature',
-    '女性・若者': 'badge-women',
-    'その他': 'badge-other',
+    '一般質問': 'badge-general',
+    '町民の声': 'badge-voice',
+    '視察・調査': 'badge-research',
   };
 
   const container = document.getElementById('timelineContainer');
@@ -479,7 +470,7 @@
         const item = document.createElement('div');
         item.className = 'report-item fi' + (i > 0 ? ` fi-d${Math.min(i, 4)}` : '');
         item.dataset.category = r.category;
-        const badgeClass = BADGE_CLASS[r.category] || 'badge-other';
+        const badgeClass = BADGE_CLASS[r.category] || 'badge-general';
         item.innerHTML = `
           <span class="report-badge ${badgeClass}">${r.category}</span>
           <h3 class="report-title">${r.title}</h3>

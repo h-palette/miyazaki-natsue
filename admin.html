@@ -156,12 +156,9 @@
       <div class="field">
         <label for="rCategory">カテゴリ</label>
         <select id="rCategory">
-          <option value="教育・子ども">教育・子ども</option>
-          <option value="働き方">働き方</option>
-          <option value="食・農業">食・農業</option>
-          <option value="自然・環境">自然・環境</option>
-          <option value="女性・若者">女性・若者</option>
-          <option value="その他">その他</option>
+          <option value="一般質問">一般質問</option>
+          <option value="町民の声">町民の声</option>
+          <option value="視察・調査">視察・調査</option>
         </select>
       </div>
       <div class="field">
@@ -225,12 +222,9 @@
   ];
 
   const BADGE_COLOR = {
-    '教育・子ども': '#7a9e7e',
-    '働き方': '#c17f4a',
-    '食・農業': '#8b6f47',
-    '自然・環境': '#2e4a38',
-    '女性・若者': '#c17f7f',
-    'その他': '#d4c5a9',
+    '一般質問': '#7a9e7e',
+    '町民の声': '#c17f4a',
+    '視察・調査': '#2e4a38',
   };
 
   function toast(msg) {
@@ -391,7 +385,7 @@
 
   function resetReportForm() {
     editingReportId = null;
-    document.getElementById('rCategory').value = '教育・子ども';
+    document.getElementById('rCategory').value = '一般質問';
     document.getElementById('rYear').value = '';
     document.getElementById('rTitle').value = '';
     document.getElementById('rText').value = '';
@@ -402,7 +396,7 @@
 
   function startEditReport(id, d) {
     editingReportId = id;
-    document.getElementById('rCategory').value = d.category || '教育・子ども';
+    document.getElementById('rCategory').value = d.category || '一般質問';
     document.getElementById('rYear').value = d.year || '';
     document.getElementById('rTitle').value = d.title || '';
     document.getElementById('rText').value = d.text || '';

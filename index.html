@@ -343,6 +343,30 @@
       color: rgba(255,255,255,.32);
     }
 
+    /* ── サポーター募集 ── */
+    .supporter { background: var(--cream-dark); text-align: center; }
+    .supporter-lead {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(15px, 4vw, 17px);
+      font-weight: 400; line-height: 1.9; letter-spacing: .06em;
+      color: var(--dark-green);
+      margin-bottom: 30px;
+    }
+    .supporter-list {
+      list-style: none; text-align: left;
+      max-width: 380px; margin: 0 auto 30px;
+      display: flex; flex-direction: column; gap: 13px;
+    }
+    .supporter-list li {
+      font-size: 13.5px; line-height: 1.85; color: var(--text);
+      padding-left: 28px; position: relative;
+    }
+    .supporter-list li::before {
+      content: '□';
+      position: absolute; left: 0; top: -1px;
+      color: var(--sage); font-size: 15px;
+    }
+
     /* ── CTA ── */
     .cta { background: var(--cream); text-align: center; }
     .cta-title {
@@ -626,6 +650,25 @@
     <small>BIHORO, HOKKAIDO — THE NIGHT SKY</small>
   </div>
 </div>
+
+<!-- サポーター募集 -->
+<section class="section supporter">
+  <div class="inner">
+    <span class="eyebrow fi">SUPPORTER</span>
+    <p class="supporter-lead fi fi-d1">── 一緒に、私たちの町を<br>住みやすくしませんか ──</p>
+    <ul class="supporter-list fi fi-d2">
+      <li>ポスターや看板を貼る場所を提供してくれる方</li>
+      <li>活動のお手伝いをしてくれる方</li>
+      <li>選挙のお手伝いをしてくれる方</li>
+    </ul>
+    <p class="body-text fi fi-d2" style="text-align:center;">
+      皆さんの応援が力になります。<br>お気軽にご連絡ください。
+    </p>
+    <div class="fi fi-d3" style="text-align:center; margin-top:28px;">
+      <a href="contact.html" class="btn-s" style="display:inline-flex;">応援を申し出る</a>
+    </div>
+  </div>
+</section>
 
 <!-- CTA -->
 <section class="section cta">
