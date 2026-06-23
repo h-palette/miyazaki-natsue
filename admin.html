@@ -143,6 +143,23 @@
       <div id="photoList"></div>
     </section>
 
+    <!-- チラシPDF管理 -->
+    <section class="card">
+      <h2>活動チラシ（PDF）</h2>
+      <p class="hint" style="margin-bottom:14px;">活動レポートページに掲載するチラシのPDFです。ファイルサイズは1MB未満にしてください（大きすぎると保存できません）。</p>
+      <div class="field">
+        <label for="pdfLabel">表示名</label>
+        <input type="text" id="pdfLabel" placeholder="例: 活動チラシ（2026年版）">
+      </div>
+      <div class="field">
+        <label for="pdfFile">PDFファイル</label>
+        <input type="file" id="pdfFile" accept="application/pdf">
+      </div>
+      <p id="pdfMsg" class="msg"></p>
+      <p class="photo-meta" id="pdfStatus" style="margin-top:10px;">確認中...</p>
+      <button class="btn btn-danger btn-small" id="pdfDeleteBtn" style="display:none; margin-top:10px;">チラシを削除する</button>
+    </section>
+
     <!-- 届いた声 -->
     <section class="card">
       <h2>届いた声</h2>
@@ -285,6 +302,7 @@
       renderPhotoList();
       renderReportList();
       renderVoiceList();
+      renderPdfStatus();
     } else {
       loginView.style.display = 'block';
       adminView.style.display = 'none';
@@ -523,6 +541,66 @@
       listEl.appendChild(row);
     });
   }
+
+  // ── チラシPDF管理 ──
+  const pdfFileInput = document.getElementById('pdfFile');
+  const pdfLabelInput = document.getElementById('pdfLabel');
+  const pdfMsg = document.getElementById('pdfMsg');
+  const pdfStatus = document.getElementById('pdfStatus');
+  const pdfDeleteBtn = document.getElementById('pdfDeleteBtn');
+
+  async function renderPdfStatus() {
+    const snap = await getDoc(doc(db, 'files', 'flyer'));
+    if (snap.exists() && snap.data().dataUrl) {
+      const d = snap.data();
+      const date = d.updatedAt ? new Date(d.updatedAt).toLocaleString('ja-JP') : '';
+      pdfStatus.textContent = `現在の掲載: ${d.label || '(表示名なし)'}（更新: ${date}）`;
+      pdfDeleteBtn.style.display = 'inline-block';
+      pdfLabelInput.value = d.label || '';
+    } else {
+      pdfStatus.textContent = 'まだチラシは掲載されていません。';
+      pdfDeleteBtn.style.display = 'none';
+    }
+  }
+
+  pdfFileInput.addEventListener('change', async () => {
+    const file = pdfFileInput.files[0];
+    if (!file) return;
+    pdfMsg.classList.remove('ok', 'error');
+    const label = pdfLabelInput.value.trim() || file.name;
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const dataUrl = reader.result;
+      if (dataUrl.length > 950000) {
+        pdfMsg.classList.add('error');
+        pdfMsg.textContent = `ファイルが大きすぎます（約${Math.round(file.size/1024)}KB）。1MB未満に圧縮してから、もう一度お試しください。`;
+        pdfFileInput.value = '';
+        return;
+      }
+      try {
+        await setDoc(doc(db, 'files', 'flyer'), {
+          dataUrl, label, fileName: file.name, updatedAt: Date.now()
+        });
+        pdfMsg.classList.add('ok');
+        pdfMsg.textContent = '掲載しました。';
+        toast('チラシPDFを掲載しました');
+        renderPdfStatus();
+      } catch (e) {
+        pdfMsg.classList.add('error');
+        pdfMsg.textContent = '保存に失敗しました。';
+      }
+      pdfFileInput.value = '';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  pdfDeleteBtn.addEventListener('click', async () => {
+    if (!confirm('掲載中のチラシを削除しますか？')) return;
+    await deleteDoc(doc(db, 'files', 'flyer'));
+    toast('削除しました');
+    renderPdfStatus();
+  });
 </script>
 </body>
 </html>

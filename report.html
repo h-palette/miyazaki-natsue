@@ -207,6 +207,27 @@
       color: rgba(250,247,242,.62); max-width: 480px;
     }
 
+    /* ── チラシPDF ── */
+    .flyer-box {
+      display: flex; align-items: center; gap: 14px;
+      background: #fff; border: 1px solid var(--beige-light); border-radius: 4px;
+      padding: 18px 22px; text-decoration: none;
+      transition: border-color .25s, transform .2s, box-shadow .25s;
+    }
+    .flyer-box:hover {
+      border-color: var(--sage); transform: translateY(-1px);
+      box-shadow: 0 4px 22px rgba(74,122,90,.08);
+    }
+    .flyer-icon { font-size: 22px; flex-shrink: 0; }
+    .flyer-text {
+      flex: 1; font-size: 14px; color: var(--dark-green);
+      font-family: 'Noto Serif JP', serif;
+    }
+    .flyer-arrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12.5px; color: var(--terracotta); flex-shrink: 0; letter-spacing: .05em;
+    }
+
     /* ── カテゴリフィルター ── */
     .filter-wrap { position: relative; }
     .filter-wrap::before,
@@ -339,6 +360,17 @@
   </div>
 </section>
 
+<!-- チラシPDF -->
+<div class="section" style="padding: 40px 0 0;">
+  <div class="inner" id="flyerWrap" style="display:none;">
+    <a href="#" id="flyerLink" download class="flyer-box fi">
+      <span class="flyer-icon">📄</span>
+      <span class="flyer-text" id="flyerLabel">活動チラシ</span>
+      <span class="flyer-arrow">PDFダウンロード →</span>
+    </a>
+  </div>
+</div>
+
 <!-- レポート一覧 -->
 <section class="section">
   <div class="inner">
@@ -428,7 +460,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
   const firebaseConfig = {
     projectId: "miyazaki-natsue",
@@ -438,6 +470,20 @@
   };
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+
+  // チラシPDF
+  getDoc(doc(db, 'files', 'flyer')).then((snap) => {
+    if (snap.exists() && snap.data().dataUrl) {
+      const d = snap.data();
+      document.getElementById('flyerLabel').textContent = d.label || '活動チラシ';
+      const link = document.getElementById('flyerLink');
+      link.href = d.dataUrl;
+      link.download = d.fileName || 'flyer.pdf';
+      const wrap = document.getElementById('flyerWrap');
+      wrap.style.display = 'block';
+      wrap.querySelectorAll('.fi').forEach(el => window.observeFadeIn ? window.observeFadeIn(el) : el.classList.add('on'));
+    }
+  }).catch(() => {});
 
   const BADGE_CLASS = {
     '一般質問': 'badge-general',
