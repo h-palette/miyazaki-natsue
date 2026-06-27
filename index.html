@@ -241,6 +241,12 @@
       font-size: 12px; font-weight: 300;
       color: rgba(255,255,255,.88); letter-spacing: .08em;
     }
+    .lg-credit {
+      display: block; margin-top: 4px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9px; letter-spacing: .16em;
+      color: rgba(255,255,255,.55);
+    }
 
     /* ── 人物 ── */
     .about { background: var(--cream-dark); }
@@ -341,6 +347,12 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 10.5px; letter-spacing: .28em;
       color: rgba(255,255,255,.32);
+    }
+    .star-belt-credit {
+      position: absolute; bottom: 14px; right: 18px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px; letter-spacing: .2em;
+      color: rgba(255,255,255,.45);
     }
 
     /* ── サポーター募集 ── */
@@ -525,7 +537,7 @@
 <!-- 全幅写真 峠 -->
 <div class="fullphoto fi">
   <img src="photo-pass.jpg" alt="美幌峠の景色" loading="lazy" data-photo-slot="pass">
-  <span class="fullphoto-cap">美幌峠 / Bihoro Pass</span>
+  <span class="fullphoto-cap">美幌峠 / Bihoro Pass　Photo: 青山秀行</span>
 </div>
 
 <!-- 暮らしグリッド -->
@@ -540,7 +552,7 @@
   <div class="life-grid fi fi-d1">
     <div class="lg-item lg-wide">
       <img src="photo-landscape.jpg" alt="北海道の広大な風景" loading="lazy" data-photo-slot="landscape">
-      <div class="lg-cap">広大な景色が、日常にある</div>
+      <div class="lg-cap">広大な景色が、日常にある<span class="lg-credit">Photo: 青山秀行</span></div>
     </div>
     <div class="lg-item">
       <img src="photo-garden.jpg" alt="家庭菜園" loading="lazy" data-photo-slot="garden">
@@ -548,7 +560,7 @@
     </div>
     <div class="lg-item">
       <img src="photo-animals.jpg" alt="身近な動物" loading="lazy" data-photo-slot="animals">
-      <div class="lg-cap">身近な生き物たち</div>
+      <div class="lg-cap">身近な生き物たち<span class="lg-credit">Photo: 青山秀行</span></div>
     </div>
     <div class="lg-item">
       <img src="photo-kids.jpg" alt="子どもの外遊び" loading="lazy" data-photo-slot="kids">
@@ -649,6 +661,7 @@
     <p>満点の星空が、見える。<br>天の川が、見える。<br>それが、ここ美幌の日常です。</p>
     <small>BIHORO, HOKKAIDO — THE NIGHT SKY</small>
   </div>
+  <span class="star-belt-credit">Photo: 青山秀行</span>
 </div>
 
 <!-- サポーター募集 -->
