@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>活動レポート | 宮崎奈津江</title>
+  <title>美幌の名所 | 宮崎奈津江</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -133,14 +133,7 @@
     }
     .rule { width: 36px; height: 1px; background: var(--beige); margin: 32px 0; }
 
-    /* ── 実績カード（流用） ── */
-    .card-label {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 10px; letter-spacing: .28em;
-      color: var(--terracotta); margin-bottom: 10px;
-    }
-
-    /* ── CTA ボタン（流用） ── */
+    /* ── ボタン（流用） ── */
     .btns { display: flex; flex-direction: column; align-items: center; gap: 14px; }
     .btn-p {
       display: inline-flex; align-items: center; justify-content: center;
@@ -190,7 +183,7 @@
     }
 
     /* ── ページヘッダー（下層ページ用） ── */
-    .page-head { background: var(--dark-green); padding: 168px 0 72px; }
+    .page-head { background: var(--dark-green); padding: 168px 0 76px; }
     .page-head .eyebrow { color: rgba(212,197,169,.5); }
     .page-head-title {
       font-family: 'Noto Serif JP', serif;
@@ -208,123 +201,45 @@
       color: rgba(250,247,242,.62); max-width: 480px;
     }
 
-    /* ── チラシPDF ── */
-    .flyer-box {
-      display: flex; align-items: center; gap: 14px;
-      background: #fff; border: 1px solid var(--beige-light); border-radius: 4px;
-      padding: 18px 22px; text-decoration: none;
-      transition: border-color .25s, transform .2s, box-shadow .25s;
+    /* ── 名所カードグリッド ── */
+    .spot-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 48px; margin-top: 8px;
     }
-    .flyer-box:hover {
-      border-color: var(--sage); transform: translateY(-1px);
-      box-shadow: 0 4px 22px rgba(74,122,90,.08);
+    .spot-photo {
+      width: 100%; aspect-ratio: 4/3; overflow: hidden; border-radius: 2px;
+      margin-bottom: 16px; background: var(--cream-dark);
+      background-size: cover; background-position: center;
+      display: flex; align-items: center; justify-content: center;
     }
-    .flyer-icon { font-size: 22px; flex-shrink: 0; }
-    .flyer-text {
-      flex: 1; font-size: 14px; color: var(--dark-green);
-      font-family: 'Noto Serif JP', serif;
-    }
-    .flyer-arrow {
+    .spot-photo-placeholder {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 12.5px; color: var(--terracotta); flex-shrink: 0; letter-spacing: .05em;
+      font-size: 11px; letter-spacing: .15em; color: var(--text-light);
     }
-
-    /* ── カテゴリフィルター ── */
-    .filter-wrap { position: relative; }
-    .filter-wrap::before,
-    .filter-wrap::after {
-      content: ''; position: absolute; top: 0; width: 32px; height: calc(100% - 18px);
-      pointer-events: none; z-index: 1; transition: opacity .25s;
+    .spot-badge {
+      display: inline-block; font-size: 10.5px; color: #fff;
+      border-radius: 20px; padding: 3px 13px; margin-bottom: 11px;
     }
-    .filter-wrap::before {
-      left: 0; opacity: 0;
-      background: linear-gradient(to right, var(--cream), rgba(250,247,242,0));
-    }
-    .filter-wrap::after {
-      right: 0;
-      background: linear-gradient(to left, var(--cream), rgba(250,247,242,0));
-    }
-    .filter-wrap.scrolled::before { opacity: 1; }
-    .filter-wrap.at-end::after { opacity: 0; }
-    .filter-bar {
-      display: flex; gap: 10px;
-      overflow-x: auto;
-      padding: 2px 2px 18px;
-      scrollbar-width: none; -ms-overflow-style: none;
-    }
-    .filter-bar::-webkit-scrollbar { display: none; }
-    .filter-btn {
-      flex-shrink: 0;
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: 12.5px; font-weight: 300; letter-spacing: .08em;
-      color: var(--text-mid);
-      background: #fff;
-      border: 1px solid var(--beige);
-      border-radius: 20px;
-      padding: 9px 20px;
-      cursor: pointer;
-      transition: background .25s, border-color .25s, color .25s;
-      white-space: nowrap;
-    }
-    .filter-btn:hover { border-color: var(--sage); color: var(--dark-green); }
-    .filter-btn.active {
-      background: var(--dark-green);
-      border-color: var(--dark-green);
-      color: var(--cream);
-    }
-
-    /* ── タイムライン（年区切り） ── */
-    .tl-group { margin-top: 8px; }
-    .tl-year-row {
-      display: flex; align-items: baseline; gap: 16px;
-      margin: 56px 0 26px;
-    }
-    .tl-group:first-child .tl-year-row { margin-top: 8px; }
-    .tl-year-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px; font-weight: 300; letter-spacing: .06em;
-      color: var(--dark-green);
-    }
-    .tl-year-suffix {
-      font-size: 12px; letter-spacing: .12em; color: var(--text-light);
-    }
-    .tl-year-line { flex: 1; height: 1px; background: var(--beige); }
-
-    /* ── レポート項目 ── */
-    .report-item {
-      padding: 26px 24px 24px;
-      background: #fff;
-      border-left: 2px solid var(--beige);
-      box-shadow: 0 2px 16px rgba(74,122,90,.05);
-      margin-bottom: 14px;
-    }
-    .report-item.hidden { display: none; }
-    .report-badge {
-      display: inline-block;
-      font-size: 11px; letter-spacing: .1em;
-      border-radius: 20px;
-      padding: 4px 14px;
-      margin-bottom: 14px;
-    }
-    .badge-general  { background: #7a9e7e; color: #fff; }
-    .badge-voice    { background: #c17f4a; color: #fff; }
-    .badge-research { background: #2e4a38; color: #fff; }
-    .report-title {
+    .spot-badge-nature  { background: #7a9e7e; }
+    .spot-badge-culture { background: #c17f4a; }
+    .spot-badge-food    { background: #2e4a38; }
+    .spot-name {
       font-family: 'Noto Serif JP', serif;
-      font-size: 15.5px; font-weight: 400; line-height: 1.65;
-      color: var(--dark-green); margin-bottom: 10px;
+      font-size: 16.5px; font-weight: 400; line-height: 1.6;
+      color: var(--dark-green); margin-bottom: 9px;
     }
-    .report-text { font-size: 13.5px; line-height: 1.95; color: var(--text); }
+    .spot-desc { font-size: 13.5px; line-height: 1.95; color: var(--text); }
 
     /* ── デスクトップ対応 ── */
     @media(min-width: 768px) {
-      #nav { padding: 26px 52px; }
+      nav { padding: 26px 52px; }
       .inner { padding: 0 52px; }
       .section { padding: 120px 0; }
       .btns { flex-direction: row; justify-content: center; }
       .btn-p, .btn-s { width: auto; }
       footer { padding: 64px 52px 44px; }
-      .page-head { padding: 200px 0 96px; }
+      .page-head { padding: 200px 0 100px; }
+      .spot-grid { grid-template-columns: 1fr 1fr; gap: 48px 36px; }
     }
   </style>
 </head>
@@ -355,45 +270,58 @@
 <!-- ページヘッダー -->
 <section class="page-head">
   <div class="inner">
-    <span class="eyebrow fi">REPORT</span>
-    <h1 class="page-head-title fi fi-d1">活動レポート</h1>
-    <p class="page-head-en fi fi-d2">WHAT I'VE BEEN DOING</p>
-    <p class="page-head-lead fi fi-d2">議会での活動、町民の方からいただいた声、視察や調査のこと。活動のすべてを、ここに記録します。</p>
+    <span class="eyebrow fi">SPOTS</span>
+    <h1 class="page-head-title fi fi-d1">美幌の名所</h1>
+    <p class="page-head-en fi fi-d2">PLACES WE LOVE IN BIHORO</p>
+    <p class="page-head-lead fi fi-d2">暮らしの中で見つけた、お気に入りの場所をご紹介します。自然、歴史や文化、食——美幌の魅力を、少しずつ増やしていきます。</p>
   </div>
 </section>
 
-<!-- チラシPDF -->
-<div class="section" style="padding: 40px 0 0;">
-  <div class="inner" id="flyerWrap" style="display:none;">
-    <a href="#" id="flyerLink" download class="flyer-box fi">
-      <span class="flyer-icon">📄</span>
-      <span class="flyer-text" id="flyerLabel">活動チラシ</span>
-      <span class="flyer-arrow">PDFダウンロード →</span>
-    </a>
-  </div>
-</div>
-
-<!-- レポート一覧 -->
+<!-- 名所カード -->
 <section class="section">
   <div class="inner">
-    <span class="eyebrow fi">FILTER BY CATEGORY</span>
-    <div class="filter-wrap fi fi-d1" id="filterWrap">
-      <div class="filter-bar" id="filterBar">
-        <button class="filter-btn active" data-filter="すべて">すべて</button>
-        <button class="filter-btn" data-filter="一般質問">一般質問</button>
-        <button class="filter-btn" data-filter="町民の声">町民の声</button>
-        <button class="filter-btn" data-filter="視察・調査">視察・調査</button>
+    <span class="eyebrow fi">PLACES</span>
+    <h2 class="sec-title fi fi-d1">美幌の、好きな場所。</h2>
+    <p class="body-text fi fi-d2">これから少しずつ、写真と一緒に増えていく予定です。</p>
+
+    <div class="spot-grid">
+      <div class="spot-card fi">
+        <div class="spot-photo" data-photo-slot="spot1"><span class="spot-photo-placeholder">PHOTO COMING SOON</span></div>
+        <span class="spot-badge spot-badge-nature">自然・絶景</span>
+        <h3 class="spot-name">名所① （準備中）</h3>
+        <p class="spot-desc">紹介文を追加予定です。</p>
+      </div>
+      <div class="spot-card fi fi-d1">
+        <div class="spot-photo" data-photo-slot="spot2"><span class="spot-photo-placeholder">PHOTO COMING SOON</span></div>
+        <span class="spot-badge spot-badge-nature">自然・絶景</span>
+        <h3 class="spot-name">名所② （準備中）</h3>
+        <p class="spot-desc">紹介文を追加予定です。</p>
+      </div>
+      <div class="spot-card fi">
+        <div class="spot-photo" data-photo-slot="spot3"><span class="spot-photo-placeholder">PHOTO COMING SOON</span></div>
+        <span class="spot-badge spot-badge-culture">歴史・文化</span>
+        <h3 class="spot-name">名所③ （準備中）</h3>
+        <p class="spot-desc">紹介文を追加予定です。</p>
+      </div>
+      <div class="spot-card fi fi-d1">
+        <div class="spot-photo" data-photo-slot="spot4"><span class="spot-photo-placeholder">PHOTO COMING SOON</span></div>
+        <span class="spot-badge spot-badge-culture">歴史・文化</span>
+        <h3 class="spot-name">名所④ （準備中）</h3>
+        <p class="spot-desc">紹介文を追加予定です。</p>
+      </div>
+      <div class="spot-card fi">
+        <div class="spot-photo" data-photo-slot="spot5"><span class="spot-photo-placeholder">PHOTO COMING SOON</span></div>
+        <span class="spot-badge spot-badge-food">食・グルメ</span>
+        <h3 class="spot-name">名所⑤ （準備中）</h3>
+        <p class="spot-desc">紹介文を追加予定です。</p>
+      </div>
+      <div class="spot-card fi fi-d1">
+        <div class="spot-photo" data-photo-slot="spot6"><span class="spot-photo-placeholder">PHOTO COMING SOON</span></div>
+        <span class="spot-badge spot-badge-food">食・グルメ</span>
+        <h3 class="spot-name">名所⑥ （準備中）</h3>
+        <p class="spot-desc">紹介文を追加予定です。</p>
       </div>
     </div>
-    <div class="rule fi fi-d1"></div>
-
-    <div id="timelineContainer">
-      <p class="hint" id="loadingMsg" style="text-align:center; color: var(--text-light);">読み込み中...</p>
-    </div>
-
-    <p class="body-text fi" id="emptyMsg" style="display:none; text-align:center; color: var(--text-light); margin-top: 32px;">
-      該当するレポートがまだありません。
-    </p>
 
     <div class="rule fi" style="margin: 56px auto 28px;"></div>
     <div class="btns fi">
@@ -446,24 +374,11 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
-  window.observeFadeIn = (el) => io.observe(el);
-
-  // フィルターバーの横スクロール端フェード
-  const filterWrap = document.getElementById('filterWrap');
-  const filterBar = document.getElementById('filterBar');
-  function updateFilterFade() {
-    const maxScroll = filterBar.scrollWidth - filterBar.clientWidth;
-    filterWrap.classList.toggle('scrolled', filterBar.scrollLeft > 4);
-    filterWrap.classList.toggle('at-end', filterBar.scrollLeft >= maxScroll - 4);
-  }
-  filterBar.addEventListener('scroll', updateFilterFade, { passive: true });
-  window.addEventListener('resize', updateFilterFade);
-  updateFilterFade();
 </script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
   const firebaseConfig = {
     projectId: "miyazaki-natsue",
@@ -474,101 +389,26 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // チラシPDF
-  getDoc(doc(db, 'files', 'flyer')).then((snap) => {
-    if (snap.exists() && snap.data().dataUrl) {
-      const d = snap.data();
-      document.getElementById('flyerLabel').textContent = d.label || '活動チラシ';
-      const link = document.getElementById('flyerLink');
-      link.href = d.dataUrl;
-      link.download = d.fileName || 'flyer.pdf';
-      const wrap = document.getElementById('flyerWrap');
-      wrap.style.display = 'block';
-      wrap.querySelectorAll('.fi').forEach(el => window.observeFadeIn ? window.observeFadeIn(el) : el.classList.add('on'));
-    }
-  }).catch(() => {});
+  const slots = new Set();
+  document.querySelectorAll('[data-photo-slot]').forEach(el => slots.add(el.dataset.photoSlot));
 
-  const BADGE_CLASS = {
-    '一般質問': 'badge-general',
-    '町民の声': 'badge-voice',
-    '視察・調査': 'badge-research',
-  };
-
-  const container = document.getElementById('timelineContainer');
-  const emptyMsg = document.getElementById('emptyMsg');
-
-  function renderTimeline(reports) {
-    container.innerHTML = '';
-    if (reports.length === 0) {
-      container.innerHTML = '<p class="hint" style="text-align:center;">まだレポートがありません。</p>';
-      return;
-    }
-    const years = [...new Set(reports.map(r => r.year))].sort((a, b) => b - a);
-    years.forEach(year => {
-      const group = document.createElement('div');
-      group.className = 'tl-group';
-      group.dataset.year = year;
-
-      const yearRow = document.createElement('div');
-      yearRow.className = 'tl-year-row fi';
-      yearRow.innerHTML = `<span class="tl-year-num">${year}</span><span class="tl-year-suffix">YEAR</span><span class="tl-year-line"></span>`;
-      group.appendChild(yearRow);
-      window.observeFadeIn(yearRow);
-
-      reports.filter(r => r.year === year).forEach((r, i) => {
-        const item = document.createElement('div');
-        item.className = 'report-item fi' + (i > 0 ? ` fi-d${Math.min(i, 4)}` : '');
-        item.dataset.category = r.category;
-        const badgeClass = BADGE_CLASS[r.category] || 'badge-general';
-        item.innerHTML = `
-          <span class="report-badge ${badgeClass}">${r.category}</span>
-          <h3 class="report-title">${r.title}</h3>
-          <p class="report-text">${r.text}</p>
-        `;
-        group.appendChild(item);
-        window.observeFadeIn(item);
+  slots.forEach(async (slot) => {
+    try {
+      const snap = await getDoc(doc(db, 'photos', slot));
+      if (!snap.exists() || !snap.data().dataUrl) return;
+      const url = snap.data().dataUrl;
+      document.querySelectorAll(`[data-photo-slot="${slot}"]`).forEach(el => {
+        if (el.tagName === 'IMG') {
+          el.src = url;
+        } else {
+          el.style.backgroundImage = `url('${url}')`;
+          el.textContent = '';
+        }
       });
-
-      container.appendChild(group);
-    });
-
-    wireFilter();
-  }
-
-  function wireFilter() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const reportItems = document.querySelectorAll('.report-item');
-    const tlGroups = document.querySelectorAll('.tl-group');
-
-    filterBtns.forEach(btn => {
-      btn.onclick = () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const cat = btn.dataset.filter;
-
-        reportItems.forEach(item => {
-          const show = cat === 'すべて' || item.dataset.category === cat;
-          item.classList.toggle('hidden', !show);
-        });
-
-        let anyVisible = false;
-        tlGroups.forEach(group => {
-          const visibleInGroup = [...group.querySelectorAll('.report-item')].some(item => !item.classList.contains('hidden'));
-          group.style.display = visibleInGroup ? '' : 'none';
-          if (visibleInGroup) anyVisible = true;
-        });
-        emptyMsg.style.display = anyVisible ? 'none' : 'block';
-      };
-    });
-  }
-
-  try {
-    const snap = await getDocs(query(collection(db, 'reports'), orderBy('year', 'desc'), orderBy('createdAt', 'desc')));
-    const reports = snap.docs.map(d => d.data());
-    renderTimeline(reports);
-  } catch (e) {
-    container.innerHTML = '<p class="hint" style="text-align:center;">読み込みに失敗しました。時間をおいて再読み込みしてください。</p>';
-  }
+    } catch (e) {
+      // 取得に失敗した場合は準備中の表示をそのまま使用
+    }
+  });
 </script>
 </body>
 </html>
