@@ -306,9 +306,6 @@
       padding: 4px 14px;
       margin-bottom: 14px;
     }
-    .badge-general  { background: #7a9e7e; color: #fff; }
-    .badge-voice    { background: #c17f4a; color: #fff; }
-    .badge-research { background: #2e4a38; color: #fff; }
     .report-title {
       font-family: 'Noto Serif JP', serif;
       font-size: 15.5px; font-weight: 400; line-height: 1.65;
@@ -380,9 +377,6 @@
     <div class="filter-wrap fi fi-d1" id="filterWrap">
       <div class="filter-bar" id="filterBar">
         <button class="filter-btn active" data-filter="すべて">すべて</button>
-        <button class="filter-btn" data-filter="一般質問">一般質問</button>
-        <button class="filter-btn" data-filter="町民の声">町民の声</button>
-        <button class="filter-btn" data-filter="視察・調査">視察・調査</button>
       </div>
     </div>
     <div class="rule fi fi-d1"></div>
@@ -459,6 +453,7 @@
   filterBar.addEventListener('scroll', updateFilterFade, { passive: true });
   window.addEventListener('resize', updateFilterFade);
   updateFilterFade();
+  window.updateFilterFade = updateFilterFade;
 </script>
 
 <script type="module">
@@ -488,14 +483,23 @@
     }
   }).catch(() => {});
 
-  const BADGE_CLASS = {
-    '一般質問': 'badge-general',
-    '町民の声': 'badge-voice',
-    '視察・調査': 'badge-research',
-  };
-
   const container = document.getElementById('timelineContainer');
   const emptyMsg = document.getElementById('emptyMsg');
+  const filterBar = document.getElementById('filterBar');
+  let categoryColors = {};
+
+  async function loadCategories() {
+    const snap = await getDocs(query(collection(db, 'categories'), orderBy('order', 'asc')));
+    snap.forEach((docSnap) => {
+      const name = docSnap.id;
+      categoryColors[name] = docSnap.data().color || '#999';
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.filter = name;
+      btn.textContent = name;
+      filterBar.appendChild(btn);
+    });
+  }
 
   function renderTimeline(reports) {
     container.innerHTML = '';
@@ -519,9 +523,9 @@
         const item = document.createElement('div');
         item.className = 'report-item fi' + (i > 0 ? ` fi-d${Math.min(i, 4)}` : '');
         item.dataset.category = r.category;
-        const badgeClass = BADGE_CLASS[r.category] || 'badge-general';
+        const color = categoryColors[r.category] || '#999';
         item.innerHTML = `
-          <span class="report-badge ${badgeClass}">${r.category}</span>
+          <span class="report-badge" style="background:${color}; color:#fff;">${r.category}</span>
           <h3 class="report-title">${r.title}</h3>
           <p class="report-text">${r.text}</p>
         `;
@@ -563,6 +567,8 @@
   }
 
   try {
+    await loadCategories();
+    if (window.updateFilterFade) window.updateFilterFade();
     const snap = await getDocs(query(collection(db, 'reports'), orderBy('year', 'desc'), orderBy('createdAt', 'desc')));
     const reports = snap.docs.map(d => d.data());
     renderTimeline(reports);
